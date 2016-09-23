@@ -1,0 +1,1285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cls_MainWindow</class>
+ <widget class="QMainWindow" name="cls_MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1005</width>
+    <height>916</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>cls_MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout_12">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="leConfigFile">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_11">
+        <item>
+         <widget class="QPushButton" name="pbImportConfig">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Import config</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbAutoNames">
+          <property name="text">
+           <string>Auto names</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbExportConfig">
+          <property name="text">
+           <string>Export config</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_10">
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>221</width>
+          <height>31</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>221</width>
+          <height>31</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>GENERATE CALIBRATION</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbRunAnalysisLaserCor">
+        <property name="text">
+         <string>RUN LASER ANALYSIS CORR</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbBatchRingsAnalysis">
+        <property name="text">
+         <string>RUN RINGS ANALYSIS</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="minimumSize">
+         <size>
+          <width>221</width>
+          <height>31</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>221</width>
+          <height>31</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>RUN LASER ANALYSYS</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_8">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QLineEdit" name="leHLDfile">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="leHLDfileCalibFile">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="leUnpackInfoFile">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QPushButton" name="pbImportHLDfile">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Import</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbExportHLDfileCalib">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Export calib. tables</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbExportUnpackInfo">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Export unpack. info</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLineEdit" name="leCalibFile">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Use this calibration for imported file</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPushButton" name="pbImportCalib">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Import calib. tables</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbExportCalib">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Export calib. tables</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbResetCalib">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Reset calibration</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLineEdit" name="leMatchedEdgesFile">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QPushButton" name="pbRunEdgeMatcher">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Run edge matcher</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbExportMatchedEdges">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Export matched edges</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbImportMatchedEdges">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Import matched edges</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QLineEdit" name="leEdgeMatcherInfoFile">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbExportEdgeMatcherInfo">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>190</width>
+          <height>31</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>190</width>
+          <height>31</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Export edge matching info</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_11">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_10">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="leChannelNum"/>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="rbChannel">
+            <property name="text">
+             <string>Channel</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="rbCh1">
+            <property name="text">
+             <string>Ch1</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="rbCh2">
+            <property name="text">
+             <string>Ch2</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="rbLaser">
+            <property name="text">
+             <string>laser</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="rbLED">
+            <property name="text">
+             <string>LED</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="rbHodo">
+            <property name="text">
+             <string>hodo coinc</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="leEventBuildingInfoFile"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QPushButton" name="pbRunEventBuilder">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Run event builder</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbExportEventBuildingInfo">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Export event building info</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_5">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="QLineEdit" name="leAnalysisInfoFile"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QPushButton" name="pbRunLaserAnalysis">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Run analysis</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbExportAnalysisInfo">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Export analysis info</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_6">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <item>
+       <widget class="QLineEdit" name="leCorrectionsFile"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_8">
+        <item>
+         <widget class="QPushButton" name="pbExportCorrections">
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Export corrections table</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbImportCorrections">
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Import corrections table</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_7">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_9">
+      <item>
+       <widget class="QLineEdit" name="leRingsAnalysisInfoFile"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_9">
+        <item>
+         <widget class="QPushButton" name="pbRunRingsAnalysis">
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Run rings analysis</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbExportRingsAnalysisInfo">
+          <property name="minimumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Export rings analysis info</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pbImportHLDfile</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ImportFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>195</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>875</x>
+     <y>46</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbImportCalib</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ImportCalibration()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>319</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>722</x>
+     <y>43</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbExportHLDfileCalib</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ExportCalibrationOfFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>232</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>824</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbRunEdgeMatcher</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>RunEdgeMatcher()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>437</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>425</x>
+     <y>216</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbExportUnpackInfo</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ExportUnpackInfo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>269</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>905</x>
+     <y>202</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbExportEdgeMatcherInfo</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ExportEdgeMatcherInfo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>994</x>
+     <y>557</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>890</x>
+     <y>504</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbExportMatchedEdges</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ExportMatchedEdges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>474</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>888</x>
+     <y>437</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbImportMatchedEdges</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ImportMatchedEdges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>511</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>844</x>
+     <y>575</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbRunEventBuilder</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>RunEventBuilder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>605</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>886</x>
+     <y>657</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbImportConfig</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ImportConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>764</x>
+     <y>96</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbExportEventBuildingInfo</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ExportEventBuildingInfo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>642</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>634</x>
+     <y>595</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbExportAnalysisInfo</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ExportAnalysisInfo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>720</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>716</x>
+     <y>676</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbExportCorrections</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ExportCorrections()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>761</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>901</x>
+     <y>746</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbImportCorrections</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ImportCorrections()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>798</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>981</x>
+     <y>746</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbExportRingsAnalysisInfo</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ExportRingsAnalysisInfo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>876</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>982</x>
+     <y>797</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbRunRingsAnalysis</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>RunRingsAnalyser()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>839</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>733</x>
+     <y>734</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>BatchGenCalib()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>209</x>
+     <y>146</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>289</x>
+     <y>113</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>BatchLaserAnalysis()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>994</x>
+     <y>146</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>645</x>
+     <y>118</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbRunAnalysisLaserCor</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>BatchLaserAnalysisCorr()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>518</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>648</x>
+     <y>96</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbBatchRingsAnalysis</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>BatchRingsAnalysis()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>660</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>727</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbAutoNames</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>GenFilenames()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>972</x>
+     <y>58</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbExportConfig</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>ExportConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>993</x>
+     <y>97</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1001</x>
+     <y>15</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>SelectConfigFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>47</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>49</x>
+     <y>11</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbRunLaserAnalysis</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>RunLaserAnalyser()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>815</x>
+     <y>689</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>800</x>
+     <y>705</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>ImportFile()</slot>
+  <slot>ImportCalibration()</slot>
+  <slot>ExportCalibrationOfFile()</slot>
+  <slot>RunEdgeMatcher()</slot>
+  <slot>ExportUnpackInfo()</slot>
+  <slot>ExportEdgeMatcherInfo()</slot>
+  <slot>ExportMatchedEdges()</slot>
+  <slot>ImportMatchedEdges()</slot>
+  <slot>RunEventBuilder()</slot>
+  <slot>RunLaserAnalyser()</slot>
+  <slot>ImportConfig()</slot>
+  <slot>ExportEventBuildingInfo()</slot>
+  <slot>ExportAnalysisInfo()</slot>
+  <slot>ExportCorrections()</slot>
+  <slot>ImportCorrections()</slot>
+  <slot>ExportRingsAnalysisInfo()</slot>
+  <slot>RunRingsAnalyser()</slot>
+  <slot>BatchGenCalib()</slot>
+  <slot>BatchLaserAnalysis()</slot>
+  <slot>BatchLaserAnalysisCorr()</slot>
+  <slot>BatchRingsAnalysis()</slot>
+  <slot>GenFilenames()</slot>
+  <slot>ExportConfig()</slot>
+  <slot>SelectConfigFile()</slot>
+ </slots>
+</ui>
