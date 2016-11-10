@@ -562,6 +562,38 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
+           <layout class="QVBoxLayout" name="verticalLayout_16">
+            <item>
+             <widget class="QRadioButton" name="rbTDC10sync">
+              <property name="text">
+               <string>TDC 0x0010 sync</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rbTDC11sync">
+              <property name="text">
+               <string>TDC 0x0011 sync</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rbTDC12sync">
+              <property name="text">
+               <string>TDC 0x0012 sync</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rbTDC13sync">
+              <property name="text">
+               <string>TDC 0x0013 sync</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>

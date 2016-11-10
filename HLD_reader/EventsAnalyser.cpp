@@ -161,7 +161,7 @@ void cls_EventsAnalyser::RunAnalysis(void)
     // Loop over all events
     for (v_iterEvents=v_Events.begin(); v_iterEvents!=v_Events.end(); ++v_iterEvents) {
 
-        cout << "Event " << ++tmpCounter << ". " << (*v_iterEvents).mHits.size() << " hits." << endl;
+        //cout << "Event " << ++tmpCounter << ". " << (*v_iterEvents).mHits.size() << " hits." << endl;
 
         ProcessPerTDC(v_iterEvents, 0x0010, 0);
         ProcessPerTDC(v_iterEvents, 0x0011, 1);

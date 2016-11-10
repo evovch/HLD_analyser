@@ -333,12 +333,21 @@ void cls_MainWindow::ImportMatchedEdges(void)
 
 void cls_MainWindow::RunEventBuilder(void)
 {
+    // Beamtime
     if (ui->rbCh1->isChecked()) mFile->SetTrigger(kCh1disc);
     if (ui->rbCh2->isChecked()) mFile->SetTrigger(kCh2disc);
     if (ui->rbLaser->isChecked()) mFile->SetTrigger(kLaser);
     if (ui->rbLED->isChecked()) mFile->SetTrigger(kLED);
     if (ui->rbHodo->isChecked()) mFile->SetTrigger(kHodoCoinc);
+
+    // Lab
+    if (ui->rbTDC10sync->isChecked()) mFile->SetTrigger(kTDC0010sync);
+    if (ui->rbTDC11sync->isChecked()) mFile->SetTrigger(kTDC0011sync);
+    if (ui->rbTDC12sync->isChecked()) mFile->SetTrigger(kTDC0012sync);
+    if (ui->rbTDC13sync->isChecked()) mFile->SetTrigger(kTDC0013sync);
+
     if (ui->rbChannel->isChecked()) mFile->SetTrigger((enu_triggerType)(ui->leChannelNum->text().toInt()));
+
     mFile->RunEventBuilder();
 }
 
@@ -395,6 +404,31 @@ void cls_MainWindow::BatchGenCalib(void)
     //this->GenFilenames();
     this->ImportFile();
     this->ExportCalibrationOfFile();
+    cout << "FINISHED BATCH" << endl;
+}
+
+// LAB -----------------------------------------------------
+
+void cls_MainWindow::BatchLabAnalysisCalibNoCorr(void)
+{
+    ui->rbTDC10sync->setChecked(true);
+
+    this->ImportConfig();
+    //this->GenFilenames();
+    this->ImportCalibration();
+
+    this->ImportFile();
+    this->ExportUnpackInfo();
+    this->RunEdgeMatcher();
+    this->ExportMatchedEdges();
+    this->ExportEdgeMatcherInfo();
+    this->RunEventBuilder();
+    this->ExportEventBuildingInfo();
+
+    //TODO
+    this->RunLaserAnalyser();
+    this->ExportAnalysisInfo();
+    this->ExportCorrections();
     cout << "FINISHED BATCH" << endl;
 }
 

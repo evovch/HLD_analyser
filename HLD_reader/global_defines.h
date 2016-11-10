@@ -15,15 +15,19 @@ const Double_t PAIRPOSITIVEWIN = 20.;   // for positive ToT
 
 // Event building parameters
 // laser
-const Double_t EVENTNEGATIVEWINLASER =  3484060.;     // minus is added automatically. negative value here means positive!
-const Double_t EVENTPOSITIVEWINLASER = -3483950.;
+const Double_t EVENTNEGATIVEWINLASER =  1000.;     // minus is added automatically. negative value here means positive!
+const Double_t EVENTPOSITIVEWINLASER =  1000.;
 
 // hodo coincidence
-const Double_t EVENTNEGATIVEWINHODO = 1000000.;     // minus is added automatically. negative value here means positive!
-const Double_t EVENTPOSITIVEWINHODO = 1000000.;
+const Double_t EVENTNEGATIVEWINHODO = 1000.;     // minus is added automatically. negative value here means positive!
+const Double_t EVENTPOSITIVEWINHODO = 1000.;
 
-const Double_t EVENTWINHISTOL =  3484060.;
-const Double_t EVENTWINHISTOR = -3483950.;
+const Double_t EVENTWINHISTOL =  1000.;
+const Double_t EVENTWINHISTOR =  1000.;
+
+// lab data analysis
+const Double_t EVENTNEGATIVEWINLAB = 100.;
+const Double_t EVENTPOSITIVEWINLAB = -20.;
 
 // The value is actually the channel number
 enum enu_triggerType {
@@ -45,7 +49,7 @@ enum enu_triggerType {
     kCh1discT = 10,
     kCh2discT = 12,
     kSpillT = 14,
-    kLaserT = 16
+    kLaserT = 16,
     /*
     // change to 33+0, 33+1, 33+2, etc...
     // TDC 0x0111
@@ -60,6 +64,12 @@ enum enu_triggerType {
     kLeadGlass2 = 57,    // 48+9
     kLeadGlass2T = 58    // 48+10
     */
+
+    // Lab data
+    kTDC0010sync = 1010,
+    kTDC0011sync = 1011,
+    kTDC0012sync = 1012,
+    kTDC0013sync = 1013
 };
 
 // Functions

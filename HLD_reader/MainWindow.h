@@ -48,8 +48,8 @@ public slots:
     void ImportCorrections(void);
     void ExportRingsAnalysisInfo(void);
 
-
     void BatchGenCalib(void);
+    void BatchLabAnalysisCalibNoCorr(void);
     void BatchLaserAnalysisNoCalibNoCorr(void);
     void BatchLaserAnalysisCalibNoCorr(void);
     void BatchLaserAnalysisNoCalibCorr(void);

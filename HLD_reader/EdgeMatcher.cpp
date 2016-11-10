@@ -114,9 +114,15 @@ void cls_EdgeMatcher::Process(void)
     cout << "Matching edges..." << endl;
     v_timer_start = std::clock();
 
+    // For lab data analysis - process sync messages as trigger messages
+    //TODO - select between the beamtime data and lab data!
+    for (UInt_t v_tdc=0; v_tdc<NUMTDCs; v_tdc++) {
+        this->ProcessSyncs(v_tdc);
+    }
+
     #pragma omp parallel for
     for (UInt_t v_tdc=0; v_tdc<NUMTDCs; v_tdc++) {
-        for (UInt_t v_ch=2; v_ch<NUMCHs; v_ch+=2) {     // Skip 0 - sync channel. Loop over trailing only.
+        for (UInt_t v_ch=2; v_ch<NUMCHs; v_ch+=2) {     // Skip 0 - sync channel. Loop over trailing only. Update, see a few lines above.
             this->MatchEdges(v_tdc, v_ch);
         }
     }
@@ -145,6 +151,25 @@ void cls_EdgeMatcher::Process(void)
     cout << "Done merging vectors. " << v_timer_end-v_timer_start << endl;
 
     // ----------------------------------------------------------------------
+}
+
+void cls_EdgeMatcher::ProcessSyncs(UInt_t p_tdc)
+{
+    //cout << "Sync channel vector size: " << fInputMessages[p_tdc][0].size() << endl;
+    //unsigned int v_counter = 0;
+
+    // loop over the sync messages
+    std::vector<cls_RawMessage>::iterator lIter;
+    for (lIter=fInputMessages[p_tdc][0].begin(); lIter!=fInputMessages[p_tdc][0].end(); lIter++)
+    {
+        //if (v_counter%1000 == 0) cout << "counter=" << v_counter << endl;
+        //v_counter++;
+
+        fOutputHitsSync[p_tdc].push_back(cls_Hit(p_tdc, kTRUE, kFALSE, 0, 0xffffffff, lIter->mFullTime, 0.));
+        //lIter = fInputMessages[p_tdc][0].erase(lIter); // here we go to the next sync message
+    }
+
+    fInputMessages[p_tdc][0].clear();
 }
 
 UInt_t cls_EdgeMatcher::ExportHistos(TString p_filename)
@@ -241,8 +266,8 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
 
         if (fVerbosityLevel > 0) {
             v_logMessage << "0 pairs found;\t" << v_counterOfTedgesWithoutLedge << " trailing edges without a pair;\t"
-                 << v_counterOfLedgesWithoutTedge << " leading edges without a pair."; // << endl;
-            cout << v_logMessage.str() << endl;
+                 << v_counterOfLedgesWithoutTedge << " leading edges without a pair." << endl;
+            cout << v_logMessage.str();
         }
 
         return;
@@ -298,8 +323,8 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
 
     if (fVerbosityLevel > 0) {
         v_logMessage << v_counterOfPairs << " pairs found;\t" << v_counterOfTedgesWithoutLedge << " trailing edges without a pair;\t"
-             << v_counterOfTedgesWithMultipleLedges << " trailing edges with multiple leading edges."; // << endl;
-        cout << v_logMessage.str() << endl;
+             << v_counterOfTedgesWithMultipleLedges << " trailing edges with multiple leading edges." << endl;
+        cout << v_logMessage.str();
     }
 
     fhPairsPerChannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2 - 1, v_counterOfPairs);
@@ -363,6 +388,26 @@ UInt_t cls_EdgeMatcher::ExportMatchedEdges(TString p_filename)
         v_outFile.write(v_buf, 29);
     }
 
+    // ------------------------------------------------------------------------
+
+    // New section - sync messages
+    // Header
+    UInt_t v_size3[NUMTDCs];
+    for (UInt_t i=0; i<NUMTDCs; i++) {
+        v_size3[i] = fOutputHitsSync[i].size();
+        v_outFile.write(reinterpret_cast<char*>(&v_size3[i]), 4);
+    }
+
+    // Data
+    for (UInt_t i=0; i<NUMTDCs; i++) {
+        std::vector<cls_Hit>::iterator iterSyncSignals;
+        for (iterSyncSignals=fOutputHitsSync[i].begin(); iterSyncSignals!=fOutputHitsSync[i].end(); ++iterSyncSignals)
+        {
+            char v_buf[29];
+            (*iterSyncSignals).Serialize(v_buf);
+            v_outFile.write(v_buf, 29);
+        }
+    }
     // ------------------------------------------------------------------------
 
     v_outFile.close();
@@ -453,6 +498,33 @@ UInt_t cls_EdgeMatcher::ImportMatchedEdges(TString p_filename)
     }
     // ------------------------------------------------------------------------
 
+    // New section - sync messages
+    char buffer2[NUMTDCs*4];
+    UInt_t v_size3[NUMTDCs];
+
+    // Header
+    v_inFile.read(buffer2, NUMTDCs*4);
+    v_cursor = 0;
+    for (UInt_t i=0; i<NUMTDCs; i++)
+    {
+        v_size3[i] = ((buffer2[v_cursor+3] << 3*8) & 0xff000000) |
+                        ((buffer2[v_cursor+2] << 2*8) & 0x00ff0000) |
+                        ((buffer2[v_cursor+1] << 1*8) & 0x0000ff00) |
+                        ((buffer2[v_cursor+0] << 0*8) & 0x000000ff);
+        v_cursor+=4;
+    }
+
+    // Data
+    for (UInt_t i=0; i<NUMTDCs; i++) {
+        for (UInt_t k=0; k<v_size3[i]; k++) {
+            v_inFile.read(bufBeamDetectors, 29);    // reuse the buffer
+            cls_Hit v_readHit(bufBeamDetectors);
+            fOutputHitsSync[i].push_back(v_readHit);
+        }
+    }
+
+    // ------------------------------------------------------------------------
+
     v_inFile.close();
 
     cout << "Done importing matched edges." << endl;
@@ -491,7 +563,6 @@ void cls_EdgeMatcher::BuildEvents(void)
         v_outputTextFile.close();
     }
 
-
     std::vector<cls_Hit>::iterator iter;
 
     std::ofstream v_outputTextFileCh15;
@@ -519,31 +590,39 @@ void cls_EdgeMatcher::BuildEvents(void)
     }
     */
 
-    // BUILD EVENTS around
-    // laser (15) or led (7) or hodo coincidence (5)
-    // the rest is thrown away
-
-    //TODO check!
-    //TODO implement other triggers
-    //TODO choose the trigger
-    UInt_t trigTdc = ((UInt_t)fTriggerType) / 33;
-    UInt_t trigChannel = (UInt_t)fTriggerType - trigTdc*33;
-
+    // Here we select the appropriate vector of trigger signals and event time window
+    std::vector<cls_Hit>* v_triggersUsed;
     Double_t v_eventLeftTimeWin;
     Double_t v_eventRightTimeWin;
-    switch (fTriggerType) {
-    case kLaser:
-        v_eventLeftTimeWin = EVENTNEGATIVEWINLASER;
-        v_eventRightTimeWin = EVENTPOSITIVEWINLASER;
-        break;
-    case kHodoCoinc:
-        v_eventLeftTimeWin = EVENTNEGATIVEWINHODO;
-        v_eventRightTimeWin = EVENTPOSITIVEWINHODO;
-        break;
-    default:
-        v_eventLeftTimeWin = EVENTNEGATIVEWINLASER;
-        v_eventRightTimeWin = EVENTPOSITIVEWINLASER;
-        break;
+
+    // Lab data
+    if (fTriggerType == kTDC0010sync || fTriggerType == kTDC0011sync ||
+        fTriggerType == kTDC0012sync || fTriggerType == kTDC0013sync) {
+
+        v_triggersUsed = &(fOutputHitsSync[fTriggerType-1010]);
+        v_eventLeftTimeWin = EVENTNEGATIVEWINLAB;
+        v_eventRightTimeWin = EVENTPOSITIVEWINLAB;
+    }
+
+    // Beamtime data
+    else {
+        UInt_t trigTdc = ((UInt_t)fTriggerType) / 33;
+        UInt_t trigChannel = (UInt_t)fTriggerType - trigTdc*33;
+        v_triggersUsed = &(fOutputHitsBeamDetectors[trigTdc][trigChannel]);
+        switch (fTriggerType) {
+        case kLaser:
+            v_eventLeftTimeWin = EVENTNEGATIVEWINLASER;
+            v_eventRightTimeWin = EVENTPOSITIVEWINLASER;
+            break;
+        case kHodoCoinc:
+            v_eventLeftTimeWin = EVENTNEGATIVEWINHODO;
+            v_eventRightTimeWin = EVENTPOSITIVEWINHODO;
+            break;
+        default:
+            v_eventLeftTimeWin = EVENTNEGATIVEWINLASER;
+            v_eventRightTimeWin = EVENTPOSITIVEWINLASER;
+            break;
+        }
     }
 
     cout << "First run" << endl;
@@ -554,8 +633,7 @@ void cls_EdgeMatcher::BuildEvents(void)
     // Loop over detected beam signals
     // First run - just to fill the histogram
     std::vector<cls_Hit>::iterator iterBeamSignals;
-    for (iterBeamSignals=fOutputHitsBeamDetectors[trigTdc][trigChannel].begin();
-         iterBeamSignals!=fOutputHitsBeamDetectors[trigTdc][trigChannel].end(); ++iterBeamSignals) {
+    for (iterBeamSignals=v_triggersUsed->begin(); iterBeamSignals!=v_triggersUsed->end(); ++iterBeamSignals) {
         Double_t trigTime = (*iterBeamSignals).GetMainTime();
 
         //cout << "Trigger " << trigTime << endl;
@@ -593,8 +671,7 @@ void cls_EdgeMatcher::BuildEvents(void)
 
     // Loop over detected beam signals
     // Second run - per-se build the events (erase the input hits)
-    for (iterBeamSignals=fOutputHitsBeamDetectors[trigTdc][trigChannel].begin();
-         iterBeamSignals!=fOutputHitsBeamDetectors[trigTdc][trigChannel].end(); ++iterBeamSignals) {
+    for (iterBeamSignals=v_triggersUsed->begin(); iterBeamSignals!=v_triggersUsed->end(); ++iterBeamSignals) {
         Double_t trigTime = (*iterBeamSignals).GetMainTime();
 
         Double_t leftBound = trigTime - v_eventLeftTimeWin;
@@ -635,7 +712,7 @@ void cls_EdgeMatcher::BuildEvents(void)
         //cout << "Removed " << counterRemovedBeforeWin << " hits before the window." << endl;
 
         if (v_curEvent.GetSize() > 0) {
-            printf ("Built event around trigger message %f size=%d\n", trigTime, v_curEvent.GetSize());
+            //printf ("Built event around trigger message %f size=%d\n", trigTime, v_curEvent.GetSize());
             fhNumOfHitsInEvent->Fill(v_curEvent.GetSize());
 
             cls_DataHandler* v_dataHandler = cls_DataHandler::Instance();

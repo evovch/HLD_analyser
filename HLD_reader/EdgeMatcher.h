@@ -25,6 +25,7 @@ public: // methods
 
     void Process(void);
     void MatchEdges(UInt_t p_tdc, UInt_t p_ch);
+    void ProcessSyncs(UInt_t p_tdc);
     void BuildEvents(void);
 
     UInt_t ExportMatchedEdges(TString p_filename);
@@ -47,6 +48,7 @@ private: // data members
     // Output hits orginized per-channel.
     std::vector<cls_Hit> fOutputHits[NUMTDCs-4][NUMHITCHs];
     std::vector<cls_Hit> fOutputHitsBeamDetectors[4][NUMCHs];
+    std::vector<cls_Hit> fOutputHitsSync[NUMTDCs];
 
 private: // data members
     static UInt_t fVerbosityLevel;

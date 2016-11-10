@@ -28,6 +28,9 @@ int main(int argc, char *argv[])
         if (v_mode.contains("gencalib")) {
             w.BatchGenCalib();
         }
+        if (v_mode.contains("laboratory_calib_nocorr")) {
+            w.BatchLabAnalysisCalibNoCorr();
+        }
         if (v_mode.contains("laser_nocalib_nocorr")) {
             w.BatchLaserAnalysisNoCalibNoCorr();
         }
