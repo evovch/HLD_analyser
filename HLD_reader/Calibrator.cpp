@@ -1,6 +1,7 @@
 #include "Calibrator.h"
 
 #include <TH1D.h>
+#include <TF1.h>
 #include <TFile.h>
 #include <TDirectory.h>
 
@@ -14,6 +15,22 @@ using std::endl;
 
 UInt_t cls_Calibrator::fMinimumEntries = 100;
 
+// A - first boundary
+// B - second boundary
+Double_t fitF(Double_t* x, Double_t* par)
+{
+    if (x[0] < par[0]) {
+        // First section - x < A
+        return 0.;
+    } else if (x[0] < par[1]) {
+        // Second section - A < x < B
+        return 5.*(x[0]-par[0])/(par[1]-par[0]);
+    } else {
+        // Third section - x > B
+        return 5.;
+    }
+}
+
 cls_Calibrator::cls_Calibrator() :
     fAllocated(kFALSE)
 {
@@ -22,6 +39,17 @@ cls_Calibrator::cls_Calibrator() :
 
     // Clear correction table
     for (UInt_t i=0; i<1024; i++) fCorrections[i] = 0.;
+
+    // Clear fitting
+
+    for (UInt_t tdc=0; tdc<NUMTDCs; tdc++) {
+        for (UInt_t ch=0; ch<NUMCHs; ch++) {
+            fFitDone[tdc][ch] = kFALSE;
+            fFitParams[tdc][ch][0] = 0.;
+            fFitParams[tdc][ch][1] = 512.;
+        }
+    }
+    fUseFittedCalibration = kFALSE;
 }
 
 cls_Calibrator::~cls_Calibrator()
@@ -41,28 +69,28 @@ void cls_Calibrator::Allocate(void)
 
         // Reset 'calibration done' flags
         histoName.Form("CalDone_%04x", v_tdcId);
-        histoTitle.Form("Calibration done for TDC %04x", v_tdcId);
+        histoTitle.Form("Calibration done for TDC %04x;;Channel", v_tdcId);
         fCalibDone[tdc] = new TH1C(histoName.Data(), histoTitle.Data(), 33, 0., 33.);
 
         histoName.Form("CalEntries_%04x", v_tdcId);
-        histoTitle.Form("Number of entries used for calibration for TDC %04x", v_tdcId);
+        histoTitle.Form("Number of entries used for calibration for TDC %04x;;Channel", v_tdcId);
         fCalibEntries[tdc] = new TH1I(histoName.Data(), histoTitle.Data(), 33, 0., 33.);
 
         for (UInt_t ch=0; ch<NUMCHs; ch++) {
             histoName.Form("FineBuffer_%04x_%02d", v_tdcId, ch);
-            histoTitle.Form("Fine time buffer for TDC %04x ch %02d", v_tdcId, ch);
+            histoTitle.Form("Fine time buffer for TDC %04x ch %02d;;Fine time counter value", v_tdcId, ch);
             fFineBuffer[tdc][ch] = new TH1D(histoName.Data(), histoTitle.Data(), 1024, 0., 1024.);
 
             histoName.Form("CalcBinWidth_%04x_%02d", v_tdcId, ch);
-            histoTitle.Form("Calculated bin width for TDC %04x ch %02d", v_tdcId, ch);
+            histoTitle.Form("Calculated bin width for TDC %04x ch %02d;;Fine time counter value", v_tdcId, ch);
             fCalcBinWidth[tdc][ch] = new TH1D(histoName.Data(), histoTitle.Data(), 1024, 0., 1024.);
 
             histoName.Form("CalTable_%04x_%02d", v_tdcId, ch);
-            histoTitle.Form("Calibration table for TDC %04x ch %02d", v_tdcId, ch);
+            histoTitle.Form("Calibration table for TDC %04x ch %02d;Fine time, [ns];Fine time counter value", v_tdcId, ch);
             fCalTable[tdc][ch] = new TH1D(histoName.Data(), histoTitle.Data(), 1024, 0., 1024.);
 
             histoName.Form("CalTableMinusLinear_%04x_%02d", v_tdcId, ch);
-            histoTitle.Form("Calibration table for TDC %04x ch %02d minus linear function", v_tdcId, ch);
+            histoTitle.Form("Calibration table for TDC %04x ch %02d minus linear function;Fine time diff, [ns];Fine time counter value", v_tdcId, ch);
             fCalTableMinusLinear[tdc][ch] = new TH1D(histoName.Data(), histoTitle.Data(), 1024, 0., 1024.);
 
             // initialize with 1 (horisontal constant function)
@@ -76,9 +104,14 @@ void cls_Calibrator::Allocate(void)
             for (UInt_t ibin=513; ibin<=1024; ibin++) {
                 fCalTable[tdc][ch]->SetBinContent(ibin, 5.);
             }
+
+            fFitDone[tdc][ch] = kFALSE;
+            fFitParams[tdc][ch][0] = 0.;
+            fFitParams[tdc][ch][1] = 512.;
         }
     }
 
+    fUseFittedCalibration = kFALSE;
     fAllocated = kTRUE;
 }
 
@@ -100,7 +133,9 @@ void cls_Calibrator::Deallocate(void)
     fAllocated = kFALSE;
 }
 
-/*void cls_Calibrator::Reset(void)
+/*
+ update this if you plan to use it! (fitting missing here)
+void cls_Calibrator::Reset(void)
 {
     if (!fAllocated) return;
 
@@ -147,12 +182,17 @@ cls_Calibrator& cls_Calibrator::operator=(const cls_Calibrator& other)
                 fCalcBinWidth[v_tdc][v_ch] = (TH1D*)other.fCalcBinWidth[v_tdc][v_ch]->Clone();
                 fCalTable[v_tdc][v_ch] = (TH1D*)other.fCalTable[v_tdc][v_ch]->Clone();
                 fCalTableMinusLinear[v_tdc][v_ch] = (TH1D*)other.fCalTableMinusLinear[v_tdc][v_ch]->Clone();
+                fFitDone[v_tdc][v_ch] = other.fFitDone[v_tdc][v_ch];
+                fFitParams[v_tdc][v_ch][0] = other.fFitParams[v_tdc][v_ch][0];
+                fFitParams[v_tdc][v_ch][1] = other.fFitParams[v_tdc][v_ch][1];
             }
         }
 
         for (UInt_t i=0; i<1024; i++) {
             fCorrections[i] = other.fCorrections[i];
         }
+
+        fUseFittedCalibration = other.fUseFittedCalibration;
 
         fAllocated = kTRUE;
     }
@@ -286,12 +326,33 @@ Double_t cls_Calibrator::GetFullTime(UInt_t p_tdcId, UInt_t p_ch, UInt_t p_epoch
 {
     UInt_t v_tdcUID = TDCidToInteger(p_tdcId);
     Double_t v_fineTime = 0.;
-    if (fCalibDone[v_tdcUID]->GetBinContent(p_ch+1) == 1) {                  // +1 because 0-th bin is underflow bin
-        v_fineTime = fCalTable[v_tdcUID][p_ch]->GetBinContent(p_fine+1);
+
+    if (fUseFittedCalibration) {
+        v_fineTime = GetFittedFineTime(v_tdcUID, p_ch, p_fine);
+    } else {
+        if (fCalibDone[v_tdcUID]->GetBinContent(p_ch+1) == 1) {                  // +1 because 0-th bin is underflow bin
+            v_fineTime = fCalTable[v_tdcUID][p_ch]->GetBinContent(p_fine+1);
+        }
     }
+
     Double_t v_correction = 0.;
     if (p_ch > 0) v_correction = fCorrections[v_tdcUID*16+((p_ch-1)/2)];
     return ((Double_t)p_epoch*5.*2048. + (Double_t)p_coarse*5. - v_fineTime - v_correction);
+}
+
+Double_t cls_Calibrator::GetFittedFineTime(UInt_t p_tdcUID, UInt_t p_ch, UInt_t p_fine)
+{
+    // Temporary set the fitting params to constant
+    Double_t A = fFitParams[p_tdcUID][p_ch][0]; // fFitParams[p_tdcUID][p_ch][0] // 27.44
+    Double_t B = fFitParams[p_tdcUID][p_ch][1]; // fFitParams[p_tdcUID][p_ch][1] // 507.6
+
+    if (p_fine < A) {
+        return 0.;
+    } else if (p_fine < B) {
+        return 5.*((Double_t)p_fine - A)/(B - A);
+    } else {
+        return 5.;
+    }
 }
 
 /* Perform calibration of one channel */
@@ -390,6 +451,32 @@ void cls_Calibrator::SetNoCalibration(void)
             fCalibDone[i]->SetBinContent(v_ch+1, 1);
         }
     }
+}
+
+void cls_Calibrator::FitOneChannel(UInt_t p_tdcId, UInt_t p_ch)
+{
+    TF1* fitFunc = new TF1("fitFunc", fitF, 0., 600., 2);
+    fitFunc->SetParameters(30.,490.);
+    fCalTable[p_tdcId][p_ch]->Fit("fitFunc");
+
+    fFitDone[p_tdcId][p_ch] = kTRUE;
+    fFitParams[p_tdcId][p_ch][0] = fitFunc->GetParameter(0);
+    fFitParams[p_tdcId][p_ch][1] = fitFunc->GetParameter(1);
+}
+
+void cls_Calibrator::FitOneTDC(UInt_t p_tdcId)
+{
+    for (UInt_t ch=0; ch<NUMCHs; ch++) {
+        this->FitOneChannel(p_tdcId, ch);
+    }
+}
+
+void cls_Calibrator::FitAll(void)
+{
+    for (UInt_t tdc=0; tdc<NUMTDCs; tdc++) {
+        this->FitOneTDC(tdc);
+    }
+    cout << "Done fitting of all calibration tables." << endl;
 }
 
 UInt_t cls_Calibrator::ImportCorrections(TString p_filename)

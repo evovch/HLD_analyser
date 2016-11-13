@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1005</width>
-    <height>916</height>
+    <height>1113</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -191,6 +191,27 @@
      </widget>
     </item>
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_12">
+      <item>
+       <widget class="QLineEdit" name="leDirectTDCfile"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbDirectTDC">
+        <property name="text">
+         <string>Run direct TDC analysis</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line_9">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -302,7 +323,7 @@
      </layout>
     </item>
     <item>
-     <widget class="Line" name="line_4">
+     <widget class="Line" name="line_2">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -416,7 +437,7 @@
      </layout>
     </item>
     <item>
-     <widget class="Line" name="line_2">
+     <widget class="Line" name="line_3">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -549,7 +570,7 @@
      </layout>
     </item>
     <item>
-     <widget class="Line" name="line_3">
+     <widget class="Line" name="line_4">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -911,7 +932,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>195</y>
+     <y>282</y>
     </hint>
     <hint type="destinationlabel">
      <x>875</x>
@@ -927,7 +948,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>319</y>
+     <y>406</y>
     </hint>
     <hint type="destinationlabel">
      <x>722</x>
@@ -943,7 +964,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>232</y>
+     <y>319</y>
     </hint>
     <hint type="destinationlabel">
      <x>824</x>
@@ -959,7 +980,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>437</y>
+     <y>530</y>
     </hint>
     <hint type="destinationlabel">
      <x>425</x>
@@ -975,7 +996,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>269</y>
+     <y>356</y>
     </hint>
     <hint type="destinationlabel">
      <x>905</x>
@@ -991,7 +1012,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>994</x>
-     <y>557</y>
+     <y>653</y>
     </hint>
     <hint type="destinationlabel">
      <x>890</x>
@@ -1007,7 +1028,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>474</y>
+     <y>567</y>
     </hint>
     <hint type="destinationlabel">
      <x>888</x>
@@ -1023,7 +1044,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>511</y>
+     <y>604</y>
     </hint>
     <hint type="destinationlabel">
      <x>844</x>
@@ -1038,8 +1059,8 @@
    <slot>RunEventBuilder()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>993</x>
-     <y>605</y>
+     <x>912</x>
+     <y>712</y>
     </hint>
     <hint type="destinationlabel">
      <x>886</x>
@@ -1070,8 +1091,8 @@
    <slot>ExportEventBuildingInfo()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>993</x>
-     <y>642</y>
+     <x>912</x>
+     <y>769</y>
     </hint>
     <hint type="destinationlabel">
      <x>634</x>
@@ -1087,7 +1108,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>720</y>
+     <y>898</y>
     </hint>
     <hint type="destinationlabel">
      <x>716</x>
@@ -1103,7 +1124,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>761</y>
+     <y>948</y>
     </hint>
     <hint type="destinationlabel">
      <x>901</x>
@@ -1119,7 +1140,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>798</y>
+     <y>985</y>
     </hint>
     <hint type="destinationlabel">
      <x>981</x>
@@ -1135,7 +1156,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>876</y>
+     <y>1072</y>
     </hint>
     <hint type="destinationlabel">
      <x>982</x>
@@ -1151,7 +1172,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>993</x>
-     <y>839</y>
+     <y>1035</y>
     </hint>
     <hint type="destinationlabel">
      <x>733</x>
@@ -1198,7 +1219,7 @@
    <slot>BatchLaserAnalysisCorr()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>518</x>
+     <x>437</x>
      <y>141</y>
     </hint>
     <hint type="destinationlabel">
@@ -1214,7 +1235,7 @@
    <slot>BatchRingsAnalysis()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>660</x>
+     <x>579</x>
      <y>141</y>
     </hint>
     <hint type="destinationlabel">
@@ -1278,12 +1299,28 @@
    <slot>RunLaserAnalyser()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>815</x>
-     <y>689</y>
+     <x>993</x>
+     <y>861</y>
     </hint>
     <hint type="destinationlabel">
      <x>800</x>
      <y>705</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pbDirectTDC</sender>
+   <signal>clicked()</signal>
+   <receiver>cls_MainWindow</receiver>
+   <slot>RunDirectTDCanalysis()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>994</x>
+     <y>218</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>758</x>
+     <y>137</y>
     </hint>
    </hints>
   </connection>
@@ -1313,5 +1350,6 @@
   <slot>GenFilenames()</slot>
   <slot>ExportConfig()</slot>
   <slot>SelectConfigFile()</slot>
+  <slot>RunDirectTDCanalysis()</slot>
  </slots>
 </ui>

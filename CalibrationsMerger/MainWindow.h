@@ -54,8 +54,6 @@ private: // methods
         return (((index/4) + 1) << 4) + (index%4);
     }
 
-
-
 };
 
 #endif // MAINWINDOW_H

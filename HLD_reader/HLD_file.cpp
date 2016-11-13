@@ -24,17 +24,20 @@ cls_HLD_file::cls_HLD_file() :
     mAnalyser(new cls_EventsAnalyser()),
     mUnpackingInfo(new cls_Unpacking_info()),
     mRingsAnalyser(new cls_RingsAnalyser()),
-    mRawEventsCounter(0)
+    mDirectTDCanalyser(nullptr),
+    mRawEventsCounter(0),
+    mRunDirectTDCanalysis(kFALSE)
 {
 }
 
 cls_HLD_file::~cls_HLD_file()
 {
-    if (mRawData) { delete [] mRawData;     mRawData = nullptr; }
+    if (mRawData) { delete [] mRawData; mRawData = nullptr; }
     delete mEdgeMatcher;    mEdgeMatcher = nullptr;
     delete mAnalyser;       mAnalyser = nullptr;
     delete mUnpackingInfo;  mUnpackingInfo = nullptr;
     delete mRingsAnalyser;  mRingsAnalyser = nullptr;
+    if (mDirectTDCanalyser) { delete mDirectTDCanalyser; mDirectTDCanalyser = nullptr; }
 }
 
 UInt_t cls_HLD_file::Import(TString p_filename, Bool_t p_doCalibration)
@@ -97,6 +100,12 @@ void cls_HLD_file::Dump(UInt_t p_amount)
         if (v_cursor % 32 == 0) printf ("\n");
     }
     printf ("\n");
+}
+
+void cls_HLD_file::SetRunDirectTDCanalysis(void)
+{
+    mRunDirectTDCanalysis = kTRUE;
+    mDirectTDCanalyser = new cls_DirectTDCanalyser();
 }
 
 //TODO check
@@ -391,6 +400,10 @@ UInt_t cls_HLD_file::ProcessTimeMessage(UInt_t tdcData, UInt_t p_tdcId, UInt_t c
     cls_RawMessage v_mess(v_tdcUID, channel, epoch, coarse, fine, fullTime);
     mEdgeMatcher->AddInputMessage(v_mess);
     mUnpackingInfo->AddMessage(v_mess);
+
+    if (mRunDirectTDCanalysis) {
+        mDirectTDCanalyser->AddMessage(v_mess);
+    }
 
     return 1; // Processed succesfully 1 message
 }

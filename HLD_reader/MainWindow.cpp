@@ -284,6 +284,25 @@ void cls_MainWindow::ImportFile(void)
     mFile->Import(ui->leHLDfile->text(), !(ui->checkBox->isChecked()));
 }
 
+void cls_MainWindow::RunDirectTDCanalysis(void)
+{
+    if (ui->checkBox->isChecked()) {
+        mFile = new cls_HLD_file();
+        mFile->SetCalibrator(mCalibrator);
+    } else {
+        mFile = new cls_HLD_file();
+        mFile->SetPseudoCalibration();
+    }
+
+    ui->pbImportHLDfile->setEnabled(false);
+    ui->pbExportHLDfileCalib->setEnabled(true);
+    mFile->SetRunDirectTDCanalysis();
+    mFile->Import(ui->leHLDfile->text(), !(ui->checkBox->isChecked()));
+    mFile->RunDirectTDCpostAnalysis();
+    mFile->ExportDirectTDCresults(ui->leAnalysisInfoFile->text());
+    this->ExportUnpackInfo();
+}
+
 void cls_MainWindow::ExportCalibrationOfFile(void)
 {
     mFile->ExportCalibration(ui->leHLDfileCalibFile->text());
@@ -394,6 +413,57 @@ void cls_MainWindow::ImportCorrections(void)
 void cls_MainWindow::ExportRingsAnalysisInfo(void)
 {
     mFile->ExportRingsAnalysisInfo(ui->leRingsAnalysisInfoFile->text());
+}
+
+// ------------------------------------------------------------------------------------------------------------------------
+
+void cls_MainWindow::BatchDirectTDCnocalib(void)
+{
+    this->ImportConfig();
+    //this->GenFilenames();
+
+    this->RunDirectTDCanalysis();
+    mFile->FitAllCalibration();
+    this->ExportCalibrationOfFile();
+
+    cout << "FINISHED BATCH" << endl;
+}
+
+void cls_MainWindow::BatchDirectTDCcalib(void)
+{
+    this->ImportConfig();
+    //this->GenFilenames();
+
+    this->ImportCalibration();
+    this->RunDirectTDCanalysis();
+
+    cout << "FINISHED BATCH" << endl;
+}
+
+void cls_MainWindow::BatchDirectTDCindividPseudocalib(void)
+{
+    this->ImportConfig();
+    //this->GenFilenames();
+
+    this->ImportCalibration();
+    mCalibrator->FitAll();
+    mCalibrator->SetUseFittedCalibration();
+    this->RunDirectTDCanalysis();
+
+    cout << "FINISHED BATCH" << endl;
+}
+
+//TODO implement
+void cls_MainWindow::BatchDirectTDCglobalPseudocalib(void)
+{
+    this->ImportConfig();
+    //this->GenFilenames();
+
+    this->SetNoCalibration();
+    mCalibrator->SetUseFittedCalibration();
+    this->RunDirectTDCanalysis();
+
+    cout << "FINISHED BATCH" << endl;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------

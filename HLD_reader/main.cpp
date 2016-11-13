@@ -55,6 +55,18 @@ int main(int argc, char *argv[])
         if (v_mode.contains("rings_calib_corr")) {
             w.BatchRingsAnalysisCalibCorr();
         }
+        if (v_mode.contains("direct_tdc_nocalib")) {
+            w.BatchDirectTDCnocalib();
+        }
+        if (v_mode.contains("direct_tdc_calib")) {
+            w.BatchDirectTDCcalib();
+        }
+        if (v_mode.contains("direct_tdc_individ_pseudocalib")) {
+            w.BatchDirectTDCindividPseudocalib();
+        }
+        if (v_mode.contains("direct_tdc_global_pseudocalib")) {
+            w.BatchDirectTDCglobalPseudocalib();
+        }
 
         return 0;
     }

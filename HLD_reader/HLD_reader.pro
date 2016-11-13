@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     global_defines.cpp \
     EventsAnalyser.cpp \
     RingsAnalyser.cpp \
-    RingVisu.cpp
+    RingVisu.cpp \
+    DirectTDCanalyser.cpp
 
 HEADERS += \
     Go4QtRoot/QRootApplication.h \
@@ -57,7 +58,8 @@ HEADERS += \
     global_defines.h \
     EventsAnalyser.h \
     RingsAnalyser.h \
-    RingVisu.h
+    RingVisu.h \
+    DirectTDCanalyser.h
 
 FORMS += \
     HistoWidget.ui \
@@ -93,4 +95,5 @@ DISTFILES += \
     batch_rings_calib_nocorr.sh \
     batch_rings_nocalib_corr.sh \
     batch_rings_nocalib_nocorr.sh \
-    batch_buildCorrections.sh
+    batch_buildCorrections.sh \
+    batch_direct_tdc.sh

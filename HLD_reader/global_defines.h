@@ -13,6 +13,10 @@ const UInt_t NUMHITCHs = 16;
 const Double_t PAIRNEGATIVEWIN = 10.;   // for negative ToT
 const Double_t PAIRPOSITIVEWIN = 20.;   // for positive ToT
 
+// Edge matching parameters only for direct TDC measurements
+const Double_t DIRECTTDCPAIRNEGWIN = -8.;   // for negative ToT
+const Double_t DIRECTTDCPAIRPOSWIN = 12.;   // for positive ToT
+
 // Event building parameters
 // laser
 const Double_t EVENTNEGATIVEWINLASER =  1000.;     // minus is added automatically. negative value here means positive!

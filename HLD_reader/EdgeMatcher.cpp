@@ -49,8 +49,6 @@ cls_EdgeMatcher::cls_EdgeMatcher()
     fhTriggerCorrelation = new TH1D("fhTriggerCorrelation", "fhTriggerCorrelation", 2000, -EVENTWINHISTOL, EVENTWINHISTOR);
     fhTriggerCorrelationInCut = new TH1D("fhTriggerCorrelationInCut", "fhTriggerCorrelationInCut", 2000, -EVENTWINHISTOL, EVENTWINHISTOR);
     fhNumOfHitsInEvent = new TH1D("fhNumOfHitsInEvent", "fhNumOfHitsInEvent", 250, 0., 250.);
-
-    //mAnalyser = new cls_EventsAnalyser();
 }
 
 cls_EdgeMatcher::~cls_EdgeMatcher()
@@ -70,8 +68,6 @@ cls_EdgeMatcher::~cls_EdgeMatcher()
     delete fhTriggerCorrelation;
     delete fhTriggerCorrelationInCut;
     delete fhNumOfHitsInEvent;
-
-   // delete mAnalyser;
 }
 
 void cls_EdgeMatcher::Process(void)
@@ -233,7 +229,8 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
 
     if (fVerbosityLevel > 0) {
         v_logMessage << "Matching edges for TDC 0x" << std::hex << v_tdcId << std::dec << " ch " << tchannel;
-        v_logMessage << ".\tTotal " << fInputMessages[p_tdc][tchannel].size() << " trailing edges in the buffer.\t";
+        v_logMessage << ".\tTotal " << fInputMessages[p_tdc][tchannel].size() << " trailing edges in the buffer.\t" << endl;
+        cout << v_logMessage.str();
     }
 
     UInt_t v_counterOfPairs = 0;
@@ -249,26 +246,27 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
 
         // loop over leading edges
         std::vector<cls_RawMessage>::iterator lIter;
-        for (lIter=fInputMessages[p_tdc][lchannel].begin(); lIter!=fInputMessages[p_tdc][lchannel].end(); /*lIter++*/)
+        for (lIter=fInputMessages[p_tdc][lchannel].begin(); lIter!=fInputMessages[p_tdc][lchannel].end(); lIter++)
         {
             fOutputHitsBeamDetectors[p_tdc-64][lchannel].push_back(cls_Hit(p_tdc, kTRUE, kFALSE, lchannel, 0xffffffff, lIter->mFullTime, 0.));
-            lIter = fInputMessages[p_tdc][lchannel].erase(lIter); // here we go to the next leading edge
             v_counterOfLedgesWithoutTedge++;
         }
+        fInputMessages[p_tdc][lchannel].clear();
+
         // loop over trailing edges
         std::vector<cls_RawMessage>::iterator tIter;
-        for (tIter=fInputMessages[p_tdc][tchannel].begin(); tIter!=fInputMessages[p_tdc][tchannel].end(); /*tIter++*/)
+        for (tIter=fInputMessages[p_tdc][tchannel].begin(); tIter!=fInputMessages[p_tdc][tchannel].end(); tIter++)
         {
             fOutputHitsBeamDetectors[p_tdc-64][tchannel].push_back(cls_Hit(p_tdc, kFALSE, kTRUE, 0xffffffff, tchannel, 0., tIter->mFullTime));
-            tIter = fInputMessages[p_tdc][tchannel].erase(tIter); // here we go to the next trailing edge
             v_counterOfTedgesWithoutLedge++;
         }
+        fInputMessages[p_tdc][tchannel].clear();
 
-        if (fVerbosityLevel > 0) {
+        /*if (fVerbosityLevel > 0) {
             v_logMessage << "0 pairs found;\t" << v_counterOfTedgesWithoutLedge << " trailing edges without a pair;\t"
                  << v_counterOfLedgesWithoutTedge << " leading edges without a pair." << endl;
             cout << v_logMessage.str();
-        }
+        }*/
 
         return;
     }
@@ -278,12 +276,17 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
     fhMessagesPerTchannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2 - 1, fInputMessages[p_tdc][tchannel].size());
     fhMessagesPerLchannel->SetBinContent(p_tdc*NUMHITCHs + lchannel/2, fInputMessages[p_tdc][lchannel].size());
 
+    UInt_t cnt=0;
+
     // Loop over the trailing edges in the buffer
     std::vector<cls_RawMessage>::iterator tIter;
     for (tIter=fInputMessages[p_tdc][tchannel].begin(); tIter!=fInputMessages[p_tdc][tchannel].end(); /*tIter++*/)
     {
         // Get the current trailing edge timestamp and define the window
         Double_t tTime = tIter->mFullTime;
+
+        // Yes, it is correct to subtract the 'positive' side of the window and add the 'negative side
+        // Lookig to the left (in negative direction) from the trailing edge gives positive ToT.
         Double_t leftBound = tTime - PAIRPOSITIVEWIN;
         Double_t rightBound = tTime + PAIRNEGATIVEWIN;
 
@@ -305,14 +308,14 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
         }
 
         // FIXME thread-safe cout
-        if (fVerbosityLevel > 1) cout << "Found " << v_numOfEdgesFound << " leading edges in the window" << endl;
+        /*if (fVerbosityLevel > 1)*/ cout << "Found " << v_numOfEdgesFound << " leading edges in the window. " << cnt++ << endl;
 
         if (v_numOfEdgesFound == 1) {
             // If only one edge found, use it. And remove both edges from the input vectors.
             fOutputHits[p_tdc][tchannel/2-1].push_back(cls_Hit(p_tdc, kTRUE, kTRUE, lchannel, tchannel, lastLiter->mFullTime, tTime));
             fhToT[p_tdc][tchannel/2-1]->Fill(tTime - lastLiter->mFullTime);
-            fInputMessages[p_tdc][lchannel].erase(lastLiter);
-            tIter = fInputMessages[p_tdc][tchannel].erase(tIter); // here we go to the next trailing edge
+            //fInputMessages[p_tdc][lchannel].erase(lastLiter); // FIXME !!! This line is actually needed, but it slows down the process so much!
+            ++tIter; // Go to the next trailing edge
             v_counterOfPairs++;
         } else {
             if (v_numOfEdgesFound == 0) v_counterOfTedgesWithoutLedge++;
@@ -321,16 +324,18 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
         }
     }
 
-    if (fVerbosityLevel > 0) {
+    /*if (fVerbosityLevel > 0) {
         v_logMessage << v_counterOfPairs << " pairs found;\t" << v_counterOfTedgesWithoutLedge << " trailing edges without a pair;\t"
              << v_counterOfTedgesWithMultipleLedges << " trailing edges with multiple leading edges." << endl;
         cout << v_logMessage.str();
-    }
+    }*/
 
     fhPairsPerChannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2 - 1, v_counterOfPairs);
     fhTedgesWithoutLedgeChannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2 - 1, v_counterOfTedgesWithoutLedge);
     fhMultipleLedgesPerChannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2 - 1, v_counterOfTedgesWithMultipleLedges);
 
+    fInputMessages[p_tdc][lchannel].clear();
+    fInputMessages[p_tdc][tchannel].clear();
 }
 
 UInt_t cls_EdgeMatcher::ExportMatchedEdges(TString p_filename)

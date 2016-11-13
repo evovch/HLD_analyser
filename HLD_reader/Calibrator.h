@@ -29,6 +29,7 @@ public: // methods
     void AddFineTime(UInt_t p_tdcId, UInt_t p_ch, UInt_t p_fine);
 
     Double_t GetFullTime(UInt_t p_tdcId, UInt_t p_ch, UInt_t p_epoch, UInt_t p_coarse, UInt_t p_fine);
+    Double_t GetFittedFineTime(UInt_t p_tdcUID, UInt_t p_ch, UInt_t p_fine);
 
     UInt_t Import(TString p_filename);
     UInt_t Import(QString p_qfilename);
@@ -40,6 +41,11 @@ public: // methods
     void CalibrateOneTDC(UInt_t p_tdcId);
     void CalibrateAll(void);
     void SetNoCalibration(void);
+    void SetUseFittedCalibration(void) { fUseFittedCalibration = kTRUE; }
+
+    void FitOneChannel(UInt_t p_tdcId, UInt_t p_ch);
+    void FitOneTDC(UInt_t p_tdcId);
+    void FitAll(void);
 
     UInt_t ImportCorrections(TString p_filename);
     UInt_t ImportCorrections(QString p_qfilename);
@@ -55,7 +61,12 @@ private: // data members
 
     Double_t fCorrections[1024];
 
+    Double_t fFitDone[NUMTDCs][NUMCHs];
+    Double_t fFitParams[NUMTDCs][NUMCHs][2];
+
     static UInt_t fMinimumEntries;
+
+    Bool_t fUseFittedCalibration;
 
 public:
     Bool_t fAllocated;

@@ -29,6 +29,7 @@ public slots:
     void PostprocessConfig(void);
 
     void ImportFile(void);          // actually Unpack!
+    void RunDirectTDCanalysis(void);
     void RunEdgeMatcher(void);
     void RunEventBuilder(void);
     void RunLaserAnalyser(void);
@@ -59,6 +60,10 @@ public slots:
     void BatchRingsAnalysisNoCalibCorr(void);
     void BatchRingsAnalysisCalibCorr(void);
 
+    void BatchDirectTDCnocalib(void);
+    void BatchDirectTDCcalib(void);
+    void BatchDirectTDCindividPseudocalib(void);
+    void BatchDirectTDCglobalPseudocalib(void);
 
 private:
     Ui::cls_MainWindow *ui;

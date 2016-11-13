@@ -10,6 +10,7 @@
 #include "EventsAnalyser.h"
 #include "Unpacking_info.h"
 #include "RingsAnalyser.h"
+#include "DirectTDCanalyser.h"
 
 class cls_HLD_file
 {
@@ -23,17 +24,21 @@ public:
     void Dump(UInt_t p_amount = 512);
     UInt_t Process(void);
 
+    void SetRunDirectTDCanalysis(void);
     void SetCalibrator(cls_Calibrator* p_calibrator);
     void SetTrigger(enu_triggerType p_type) { mEdgeMatcher->SetTrigger(p_type); }
 
+    void RunDirectTDCpostAnalysis(void) { mDirectTDCanalyser->RunPostAnalysis(); }
     void RunEdgeMatcher(void) { mEdgeMatcher->Process(); }
     void RunEventBuilder(void) { mEdgeMatcher->BuildEvents(); }
     void RunAnalyser(void) { mAnalyser->RunAnalysis(); }
     void RunRingsAnalyser(void) { mRingsAnalyser->RunAnalysis(); }
 
+    void FitAllCalibration() { mCalibrator.FitAll(); }
     void ExportCalibration(QString p_filename) { mCalibrator.Export(p_filename); }
     void ImportCalibration(QString p_filename) { mCalibrator.Import(p_filename); }
     //void ResetCalibration() { mCalibrator.Reset(); }
+    void SetPseudoCalibration(void) { mCalibrator.SetNoCalibration(); }
     void ExportMatchedEdges(QString p_filename) { mEdgeMatcher->ExportMatchedEdges(p_filename); }
     void ImportMatchedEdges(QString p_filename) { mEdgeMatcher->ImportMatchedEdges(p_filename); }
 
@@ -44,6 +49,7 @@ public:
     void ExportCorrections(QString p_filename) { mAnalyser->ExportCorrections(p_filename); }
     void ImportCorrections(QString p_filename) { mCalibrator.ImportCorrections(p_filename); }
     void ExportRingsAnalysisInfo(QString p_filename) { mRingsAnalyser->ExportHistos(p_filename); }
+    void ExportDirectTDCresults(QString p_filename) { mDirectTDCanalyser->ExportHistos(p_filename); }
 
 private:
     void ProcessEvent(unsigned char* p_data, UInt_t p_eventSize);
@@ -67,8 +73,11 @@ private:
     cls_EventsAnalyser* mAnalyser;
     cls_Unpacking_info* mUnpackingInfo;
     cls_RingsAnalyser* mRingsAnalyser;
+    cls_DirectTDCanalyser* mDirectTDCanalyser;
 
     UInt_t mRawEventsCounter;
+
+    Bool_t mRunDirectTDCanalysis;
 
     static UInt_t mVerbosityLevel;
 };

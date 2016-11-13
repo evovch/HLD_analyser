@@ -156,7 +156,7 @@ void cls_EventsAnalyser::RunAnalysis(void)
     std::vector<cls_Event>& v_Events = v_dataHandler->mEvents;
     std::vector<cls_Event>::iterator v_iterEvents;
 
-    UInt_t tmpCounter = 0;
+    //UInt_t tmpCounter = 0;
 
     // Loop over all events
     for (v_iterEvents=v_Events.begin(); v_iterEvents!=v_Events.end(); ++v_iterEvents) {
