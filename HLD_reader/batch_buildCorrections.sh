@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=/home/evovch/Documents/Analysis_Sep2016/config/
+DIR=/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/config/
 SUMFILENAME=analysis_sum_laser_calib_nocorr.root
 
 #cd ${DIR}../analysis_results_laser_calib_nocorr/

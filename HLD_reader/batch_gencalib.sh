@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=/home/evovch/Documents/Analysis_Sep2016/threshold_scan_2/config/
+DIR=/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/config/
 
 for CFGFILE in ${DIR}*.cfg
 do

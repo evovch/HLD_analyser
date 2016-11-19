@@ -234,18 +234,18 @@ void cls_MainWindow::GenFilenames(void)
     v_token = v_tokens.rbegin();
     QString v_basename = (*v_token);
 
-    QString v_calibPath("/home/evovch/DATA/Analysis6_-_calib_stability/calibration_files/calib_");
-    QString v_hitsPath("/home/evovch/DATA/Analysis6_-_calib_stability/hits_files/hits_");
-    QString v_unpackingInfoPath("/home/evovch/DATA/Analysis6_-_calib_stability/analysis_results/unpack_info_");
-    QString v_edgeMatchingInfoPath("/home/evovch/DATA/Analysis6_-_calib_stability/analysis_results/edgematch_info_");
-    QString v_evbldInfoPath("/home/evovch/DATA/Analysis6_-_calib_stability/analysis_results/evbld_info_");
-    QString v_analysisInfoPath("/home/evovch/DATA/Analysis6_-_calib_stability/analysis_results/analysis_info_");
-    QString v_correctionsPath("/home/evovch/DATA/Analysis6_-_calib_stability/corrections/corrections_");
-    QString v_ringsAnalysisInfoPath("/home/evovch/DATA/Analysis6_-_calib_stability/analysis_results/analysis_info_");
+    QString v_calibPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/calibration_files/calib_");
+    QString v_hitsPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/hits_files/hits_");
+    QString v_unpackingInfoPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/analysis_results/unpack_info_");
+    QString v_edgeMatchingInfoPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/analysis_results/edgematch_info_");
+    QString v_evbldInfoPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/analysis_results/evbld_info_");
+    QString v_analysisInfoPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/analysis_results/analysis_info_");
+    QString v_correctionsPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/corrections/corrections_");
+    QString v_ringsAnalysisInfoPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/analysis_results/analysis_info_");
 
     if (v_basename.endsWith(".hld")) {
 
-        v_calibPath += v_basename;                  v_calibPath += ".root";
+        v_calibPath += "sum";                  v_calibPath += ".root";
         v_hitsPath += v_basename;                   v_hitsPath += ".hits";
         v_unpackingInfoPath += v_basename;          v_unpackingInfoPath += ".root";
         v_edgeMatchingInfoPath += v_basename;       v_edgeMatchingInfoPath += ".root";
@@ -484,7 +484,7 @@ void cls_MainWindow::BatchLabAnalysisCalibNoCorr(void)
     ui->rbTDC10sync->setChecked(true);
 
     this->ImportConfig();
-    //this->GenFilenames();
+    this->GenFilenames();
     this->ImportCalibration();
 
     this->ImportFile();
@@ -509,7 +509,7 @@ void cls_MainWindow::BatchLaserAnalysisNoCalibNoCorr(void)
     ui->rbLaser->setChecked(true);
 
     this->ImportConfig();
-    //this->GenFilenames();
+    this->GenFilenames();
     this->SetNoCalibration();
 
     this->ImportFile();
@@ -530,7 +530,7 @@ void cls_MainWindow::BatchLaserAnalysisCalibNoCorr(void)
     ui->rbLaser->setChecked(true);
 
     this->ImportConfig();
-    //this->GenFilenames();
+    this->GenFilenames();
     this->ImportCalibration();
 
     this->ImportFile();
@@ -551,11 +551,11 @@ void cls_MainWindow::BatchLaserAnalysisNoCalibCorr(void)
     ui->rbLaser->setChecked(true);
 
     this->ImportConfig();
-    //this->GenFilenames();
+    this->GenFilenames();
     this->SetNoCalibration();
 
     QString v_oldCorrTableFile(ui->leCorrectionsFile->text());
-    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/WLS_off/correction_to_use/corrections.txt");
+    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/correction_to_use/corrections.txt");
     this->ImportCorrections();
     ui->leCorrectionsFile->setText(v_oldCorrTableFile);
 
@@ -577,11 +577,11 @@ void cls_MainWindow::BatchLaserAnalysisCalibCorr(void)
     ui->rbLaser->setChecked(true);
 
     this->ImportConfig();
-    //this->GenFilenames();
+    this->GenFilenames();
     this->ImportCalibration();
 
     QString v_oldCorrTableFile(ui->leCorrectionsFile->text());
-    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/WLS_off/correction_to_use/corrections.txt");
+    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/correction_to_use/corrections.txt");
     this->ImportCorrections();
     ui->leCorrectionsFile->setText(v_oldCorrTableFile);
 
@@ -603,7 +603,7 @@ void cls_MainWindow::BatchLaserAnalysisCalibCorr(void)
 void cls_MainWindow::BatchRingsAnalysisNoCalibNoCorr(void)
 {
     this->ImportConfig();
-    //this->GenFilenames();
+    this->GenFilenames();
     this->SetNoCalibration();
 
     this->ImportMatchedEdges();
@@ -620,7 +620,7 @@ void cls_MainWindow::BatchRingsAnalysisNoCalibNoCorr(void)
 void cls_MainWindow::BatchRingsAnalysisCalibNoCorr(void)
 {
     this->ImportConfig();
-    //this->GenFilenames();
+    this->GenFilenames();
     this->ImportCalibration();
 
     this->ImportMatchedEdges();
@@ -637,11 +637,11 @@ void cls_MainWindow::BatchRingsAnalysisCalibNoCorr(void)
 void cls_MainWindow::BatchRingsAnalysisNoCalibCorr(void)
 {
     this->ImportConfig();
-    //this->GenFilenames();
+    this->GenFilenames();
     this->SetNoCalibration();
 
     QString v_oldCorrTableFile(ui->leCorrectionsFile->text());
-    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/WLS_off/correction_to_use/corrections.txt");
+    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/correction_to_use/corrections.txt");
     this->ImportCorrections();
     ui->leCorrectionsFile->setText(v_oldCorrTableFile);
 
@@ -659,11 +659,11 @@ void cls_MainWindow::BatchRingsAnalysisNoCalibCorr(void)
 void cls_MainWindow::BatchRingsAnalysisCalibCorr(void)
 {
     this->ImportConfig();
-    //this->GenFilenames();
+    this->GenFilenames();
     this->ImportCalibration();
 
     QString v_oldCorrTableFile(ui->leCorrectionsFile->text());
-    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/WLS_off/correction_to_use/corrections.txt");
+    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/correction_to_use/corrections.txt");
     this->ImportCorrections();
     ui->leCorrectionsFile->setText(v_oldCorrTableFile);
 

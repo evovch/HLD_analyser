@@ -69,28 +69,28 @@ void cls_Calibrator::Allocate(void)
 
         // Reset 'calibration done' flags
         histoName.Form("CalDone_%04x", v_tdcId);
-        histoTitle.Form("Calibration done for TDC %04x;;Channel", v_tdcId);
+        histoTitle.Form("Calibration done for TDC %04x;Channel;Done", v_tdcId);
         fCalibDone[tdc] = new TH1C(histoName.Data(), histoTitle.Data(), 33, 0., 33.);
 
         histoName.Form("CalEntries_%04x", v_tdcId);
-        histoTitle.Form("Number of entries used for calibration for TDC %04x;;Channel", v_tdcId);
+        histoTitle.Form("Number of entries used for calibration for TDC %04x;Channel;Entries", v_tdcId);
         fCalibEntries[tdc] = new TH1I(histoName.Data(), histoTitle.Data(), 33, 0., 33.);
 
         for (UInt_t ch=0; ch<NUMCHs; ch++) {
             histoName.Form("FineBuffer_%04x_%02d", v_tdcId, ch);
-            histoTitle.Form("Fine time buffer for TDC %04x ch %02d;;Fine time counter value", v_tdcId, ch);
+            histoTitle.Form("Fine time buffer for TDC %04x ch %02d;Fine time counter value", v_tdcId, ch);
             fFineBuffer[tdc][ch] = new TH1D(histoName.Data(), histoTitle.Data(), 1024, 0., 1024.);
 
             histoName.Form("CalcBinWidth_%04x_%02d", v_tdcId, ch);
-            histoTitle.Form("Calculated bin width for TDC %04x ch %02d;;Fine time counter value", v_tdcId, ch);
+            histoTitle.Form("Calculated bin width for TDC %04x ch %02d;Fine time counter value", v_tdcId, ch);
             fCalcBinWidth[tdc][ch] = new TH1D(histoName.Data(), histoTitle.Data(), 1024, 0., 1024.);
 
             histoName.Form("CalTable_%04x_%02d", v_tdcId, ch);
-            histoTitle.Form("Calibration table for TDC %04x ch %02d;Fine time, [ns];Fine time counter value", v_tdcId, ch);
+            histoTitle.Form("Calibration table for TDC %04x ch %02d;Fine time counter value;Fine time, [ns]", v_tdcId, ch);
             fCalTable[tdc][ch] = new TH1D(histoName.Data(), histoTitle.Data(), 1024, 0., 1024.);
 
             histoName.Form("CalTableMinusLinear_%04x_%02d", v_tdcId, ch);
-            histoTitle.Form("Calibration table for TDC %04x ch %02d minus linear function;Fine time diff, [ns];Fine time counter value", v_tdcId, ch);
+            histoTitle.Form("Calibration table for TDC %04x ch %02d minus linear function;Fine time counter value;Fine time diff, [ns]", v_tdcId, ch);
             fCalTableMinusLinear[tdc][ch] = new TH1D(histoName.Data(), histoTitle.Data(), 1024, 0., 1024.);
 
             // initialize with 1 (horisontal constant function)

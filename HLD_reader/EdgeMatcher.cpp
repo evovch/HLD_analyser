@@ -32,23 +32,23 @@ cls_EdgeMatcher::cls_EdgeMatcher()
     for (UInt_t v_tdc=0; v_tdc<NUMTDCs; v_tdc++) {
         for (UInt_t v_ch=0; v_ch<NUMHITCHs; v_ch++) {
             histoName.Form("fhToT_TDC_%d_pch_%d", v_tdc, v_ch);
-            histoTitle.Form("fhToT_TDC_%d_pch_%d", v_tdc, v_ch);
+            histoTitle.Form("fhToT_TDC_%d_pch_%d;ns;Entries", v_tdc, v_ch);
             fhToT[v_tdc][v_ch] = new TH1D(histoName.Data(), histoTitle.Data(), 600, -PAIRNEGATIVEWIN, PAIRPOSITIVEWIN);
         }
     }
 
     UInt_t nbins = (NUMTDCs-4)*NUMHITCHs;
 
-    fhMessagesPerLchannel = new TH1D("fhMessagesPerLchannel", "fhMessagesPerLchannel", nbins, 0., (Double_t)nbins);
-    fhMessagesPerTchannel = new TH1D("fhMessagesPerTchannel", "fhMessagesPerTchannel", nbins, 0., (Double_t)nbins);
-    fhPairsPerChannel = new TH1D("fhPairsPerChannel", "fhPairsPerChannel", nbins, 0., (Double_t)nbins);
-    fhTedgesWithoutLedgeChannel = new TH1D("fhSingleEdgesPerChannel", "fhSingleEdgesPerChannel", nbins, 0., (Double_t)nbins);
-    fhMultipleLedgesPerChannel = new TH1D("fhMultipleLedgesPerChannel", "fhMultipleLedgesPerChannel", nbins, 0., (Double_t)nbins);
+    fhMessagesPerLchannel = new TH1D("fhMessagesPerLchannel", "fhMessagesPerLchannel;Channel;Entries", nbins, 0., (Double_t)nbins);
+    fhMessagesPerTchannel = new TH1D("fhMessagesPerTchannel", "fhMessagesPerTchannel;Channel;Entries", nbins, 0., (Double_t)nbins);
+    fhPairsPerChannel = new TH1D("fhPairsPerChannel", "fhPairsPerChannel;Channel;Entries", nbins, 0., (Double_t)nbins);
+    fhTedgesWithoutLedgeChannel = new TH1D("fhSingleEdgesPerChannel", "fhSingleEdgesPerChannel;Channel;Entries", nbins, 0., (Double_t)nbins);
+    fhMultipleLedgesPerChannel = new TH1D("fhMultipleLedgesPerChannel", "fhMultipleLedgesPerChannel;Channel;Entries", nbins, 0., (Double_t)nbins);
 
     // Event building histograms
-    fhTriggerCorrelation = new TH1D("fhTriggerCorrelation", "fhTriggerCorrelation", 2000, -EVENTWINHISTOL, EVENTWINHISTOR);
-    fhTriggerCorrelationInCut = new TH1D("fhTriggerCorrelationInCut", "fhTriggerCorrelationInCut", 2000, -EVENTWINHISTOL, EVENTWINHISTOR);
-    fhNumOfHitsInEvent = new TH1D("fhNumOfHitsInEvent", "fhNumOfHitsInEvent", 250, 0., 250.);
+    fhTriggerCorrelation = new TH1D("fhTriggerCorrelation", "fhTriggerCorrelation;ns;Entries", 2000, -EVENTWINHISTOL, EVENTWINHISTOR);
+    fhTriggerCorrelationInCut = new TH1D("fhTriggerCorrelationInCut", "fhTriggerCorrelationInCut;ns;Entries", 2000, -EVENTWINHISTOL, EVENTWINHISTOR);
+    fhNumOfHitsInEvent = new TH1D("fhNumOfHitsInEvent", "fhNumOfHitsInEvent;Number of hits;Entries", 250, 0., 250.);
 }
 
 cls_EdgeMatcher::~cls_EdgeMatcher()
@@ -83,7 +83,8 @@ void cls_EdgeMatcher::Process(void)
     for (UInt_t v_tdc=0; v_tdc<NUMTDCs; v_tdc++) {
         for (UInt_t v_ch=0; v_ch<NUMCHs; v_ch++) {
             if (fInputMessages[v_tdc][v_ch].size() > 0)
-                std::sort(fInputMessages[v_tdc][v_ch].begin(), fInputMessages[v_tdc][v_ch].end());
+                //std::sort(fInputMessages[v_tdc][v_ch].begin(), fInputMessages[v_tdc][v_ch].end());
+                fInputMessages[v_tdc][v_ch].sort();
         }
     }
 
@@ -116,7 +117,7 @@ void cls_EdgeMatcher::Process(void)
         this->ProcessSyncs(v_tdc);
     }
 
-    #pragma omp parallel for
+    //#pragma omp parallel for
     for (UInt_t v_tdc=0; v_tdc<NUMTDCs; v_tdc++) {
         for (UInt_t v_ch=2; v_ch<NUMCHs; v_ch+=2) {     // Skip 0 - sync channel. Loop over trailing only. Update, see a few lines above.
             this->MatchEdges(v_tdc, v_ch);
@@ -129,14 +130,14 @@ void cls_EdgeMatcher::Process(void)
     cls_DataHandler* v_dataHandler = cls_DataHandler::Instance();
     std::multimap<Double_t, cls_Hit>& v_mapOfHits = v_dataHandler->fMapOfHits;
 
-    cout << "Merging vectors..." << endl;
+    cout << "Merging lists..." << endl;
     v_timer_start = std::clock();
 
-    // Merge separate vectors of hits into a single vector
+    // Merge separate lists of hits into a single list
     for (UInt_t v_tdc=0; v_tdc<NUMTDCs-4; v_tdc++) {
         for (UInt_t v_ch=0; v_ch<NUMHITCHs; v_ch++) {
             //cout << "TDC " << v_tdc << " ch " << v_ch << endl;
-            std::vector<cls_Hit>::iterator iter;
+            std::list<cls_Hit>::iterator iter;
             for (iter=fOutputHits[v_tdc][v_ch].begin(); iter!=fOutputHits[v_tdc][v_ch].end(); ++iter) {
                 v_mapOfHits.insert(std::pair<Double_t, cls_Hit>(iter->GetMainTime(), *iter));
             }
@@ -144,25 +145,24 @@ void cls_EdgeMatcher::Process(void)
     }
 
     v_timer_end = std::clock();
-    cout << "Done merging vectors. " << v_timer_end-v_timer_start << endl;
+    cout << "Done merging lists. " << v_timer_end-v_timer_start << endl;
 
     // ----------------------------------------------------------------------
 }
 
 void cls_EdgeMatcher::ProcessSyncs(UInt_t p_tdc)
 {
-    //cout << "Sync channel vector size: " << fInputMessages[p_tdc][0].size() << endl;
+    //cout << "Sync channel list size: " << fInputMessages[p_tdc][0].size() << endl;
     //unsigned int v_counter = 0;
 
     // loop over the sync messages
-    std::vector<cls_RawMessage>::iterator lIter;
+    std::list<cls_RawMessage>::iterator lIter;
     for (lIter=fInputMessages[p_tdc][0].begin(); lIter!=fInputMessages[p_tdc][0].end(); lIter++)
     {
         //if (v_counter%1000 == 0) cout << "counter=" << v_counter << endl;
         //v_counter++;
 
         fOutputHitsSync[p_tdc].push_back(cls_Hit(p_tdc, kTRUE, kFALSE, 0, 0xffffffff, lIter->mFullTime, 0.));
-        //lIter = fInputMessages[p_tdc][0].erase(lIter); // here we go to the next sync message
     }
 
     fInputMessages[p_tdc][0].clear();
@@ -226,17 +226,37 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
     UInt_t v_tdcId = IntegerToTDCid(p_tdc);
 
     stringstream v_logMessage;
+    stringstream v_subMessage;
+
+    Int_t LTdiff = (Int_t)fInputMessages[p_tdc][tchannel].size() - (Int_t)fInputMessages[p_tdc][lchannel].size();
 
     if (fVerbosityLevel > 0) {
-        v_logMessage << "Matching edges for TDC 0x" << std::hex << v_tdcId << std::dec << " ch " << tchannel;
-        v_logMessage << ".\tTotal " << fInputMessages[p_tdc][tchannel].size() << " trailing edges in the buffer.\t" << endl;
-        cout << v_logMessage.str();
+
+        v_subMessage << "Matching edges for TDC 0x" << std::hex << v_tdcId << std::dec << " ch " << tchannel << ".";
+        v_logMessage << std::left << std::setw(40) << v_subMessage.str();
+        v_subMessage.str(std::string()); v_subMessage.clear();
+
+        v_subMessage << "Total " << fInputMessages[p_tdc][tchannel].size() << " T in buf;";
+        v_logMessage << std::left << std::setw(25) << v_subMessage.str();
+        v_subMessage.str(std::string()); v_subMessage.clear();
+
+        v_subMessage << "Total " << fInputMessages[p_tdc][lchannel].size() << " L in buf;";
+        v_logMessage << std::left << std::setw(25) << v_subMessage.str();
+        v_subMessage.str(std::string()); v_subMessage.clear();
+
+        v_subMessage << "Diff " << LTdiff << ";";
+        v_logMessage << std::left << std::setw(15) << v_subMessage.str();
+        v_subMessage.str(std::string()); v_subMessage.clear();
+
+        //v_logMessage << endl;
+        //cout << v_logMessage.str();
     }
 
     UInt_t v_counterOfPairs = 0;
     UInt_t v_counterOfTedgesWithoutLedge = 0;
     UInt_t v_counterOfLedgesWithoutTedge = 0;
     UInt_t v_counterOfTedgesWithMultipleLedges = 0;
+    UInt_t v_counterOfSkippedLedges = 0;
 
     // All fInputMessages are sorted beforehand
 
@@ -245,7 +265,7 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
     if (v_tdcId == 0x0110 || v_tdcId == 0x0111 || v_tdcId == 0x0113) {
 
         // loop over leading edges
-        std::vector<cls_RawMessage>::iterator lIter;
+        std::list<cls_RawMessage>::iterator lIter;
         for (lIter=fInputMessages[p_tdc][lchannel].begin(); lIter!=fInputMessages[p_tdc][lchannel].end(); lIter++)
         {
             fOutputHitsBeamDetectors[p_tdc-64][lchannel].push_back(cls_Hit(p_tdc, kTRUE, kFALSE, lchannel, 0xffffffff, lIter->mFullTime, 0.));
@@ -254,7 +274,7 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
         fInputMessages[p_tdc][lchannel].clear();
 
         // loop over trailing edges
-        std::vector<cls_RawMessage>::iterator tIter;
+        std::list<cls_RawMessage>::iterator tIter;
         for (tIter=fInputMessages[p_tdc][tchannel].begin(); tIter!=fInputMessages[p_tdc][tchannel].end(); tIter++)
         {
             fOutputHitsBeamDetectors[p_tdc-64][tchannel].push_back(cls_Hit(p_tdc, kFALSE, kTRUE, 0xffffffff, tchannel, 0., tIter->mFullTime));
@@ -262,25 +282,43 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
         }
         fInputMessages[p_tdc][tchannel].clear();
 
-        /*if (fVerbosityLevel > 0) {
-            v_logMessage << "0 pairs found;\t" << v_counterOfTedgesWithoutLedge << " trailing edges without a pair;\t"
-                 << v_counterOfLedgesWithoutTedge << " leading edges without a pair." << endl;
+        if (fVerbosityLevel > 0) {
+
+            v_subMessage << "Found 0 pairs;";
+            v_logMessage << std::left << std::setw(22) << v_subMessage.str();
+            v_subMessage.str(std::string()); v_subMessage.clear();
+
+            v_subMessage << v_counterOfTedgesWithoutLedge << " T edges wo pair;";
+            v_logMessage << std::left << std::setw(25) << v_subMessage.str();
+            v_subMessage.str(std::string()); v_subMessage.clear();
+
+            v_subMessage << v_counterOfLedgesWithoutTedge << " skipped L edges wo pair;";
+            v_logMessage << std::left << std::setw(32) << v_subMessage.str();
+            v_subMessage.str(std::string()); v_subMessage.clear();
+
+            //v_subMessage << "";
+            v_logMessage << std::left << std::setw(37) << v_subMessage.str();
+            v_subMessage.str(std::string()); v_subMessage.clear();
+
+            v_logMessage << std::left << std::setw(10) << "+";
+
+            v_logMessage << endl;
             cout << v_logMessage.str();
-        }*/
+        }
 
         return;
     }
 
     // Only for PMT TDCs (NOT beam detectors - 0x0110-0x0113)
 
-    fhMessagesPerTchannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2 - 1, fInputMessages[p_tdc][tchannel].size());
-    fhMessagesPerLchannel->SetBinContent(p_tdc*NUMHITCHs + lchannel/2, fInputMessages[p_tdc][lchannel].size());
+    fhMessagesPerTchannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2, fInputMessages[p_tdc][tchannel].size());
+    fhMessagesPerLchannel->SetBinContent(p_tdc*NUMHITCHs + lchannel/2+1, fInputMessages[p_tdc][lchannel].size());
 
     UInt_t cnt=0;
 
     // Loop over the trailing edges in the buffer
-    std::vector<cls_RawMessage>::iterator tIter;
-    for (tIter=fInputMessages[p_tdc][tchannel].begin(); tIter!=fInputMessages[p_tdc][tchannel].end(); /*tIter++*/)
+    std::list<cls_RawMessage>::iterator tIter;
+    for (tIter=fInputMessages[p_tdc][tchannel].begin(); tIter!=fInputMessages[p_tdc][tchannel].end(); tIter++)
     {
         // Get the current trailing edge timestamp and define the window
         Double_t tTime = tIter->mFullTime;
@@ -291,12 +329,12 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
         Double_t rightBound = tTime + PAIRNEGATIVEWIN;
 
         UInt_t v_numOfEdgesFound=0;
-        std::vector<cls_RawMessage>::iterator lIter;
-        std::vector<cls_RawMessage>::iterator lastLiter;
+        std::list<cls_RawMessage>::iterator lIter;
+        std::list<cls_RawMessage>::iterator lastLiter;
         // Loop over the leading edges
         // Search for the edge in the window
         // Count them and store last found leading edge
-        for (lIter = fInputMessages[p_tdc][lchannel].begin(); lIter!=fInputMessages[p_tdc][lchannel].end(); ++lIter) {
+        for (lIter = fInputMessages[p_tdc][lchannel].begin(); lIter!=fInputMessages[p_tdc][lchannel].end(); /*++lIter*/) {
             Double_t lTime = lIter->mFullTime;
             // Condition to stop searching
             if (lTime > rightBound) break;
@@ -304,35 +342,58 @@ void cls_EdgeMatcher::MatchEdges(UInt_t p_tdc, UInt_t p_ch)
                 // Edge is in window! Count it.
                 v_numOfEdgesFound++;
                 lastLiter = lIter;
+                ++lIter;
+            }
+            if (lTime < leftBound) {
+                v_counterOfSkippedLedges++;
+                lIter = fInputMessages[p_tdc][lchannel].erase(lIter);
             }
         }
 
         // FIXME thread-safe cout
-        /*if (fVerbosityLevel > 1)*/ cout << "Found " << v_numOfEdgesFound << " leading edges in the window. " << cnt++ << endl;
+        if (fVerbosityLevel > 1) cout << "Found " << v_numOfEdgesFound << " leading edges in the window. " << cnt++ << endl;
 
         if (v_numOfEdgesFound == 1) {
-            // If only one edge found, use it. And remove both edges from the input vectors.
+            // If only one edge found, use it. And remove both edges from the input lists.
             fOutputHits[p_tdc][tchannel/2-1].push_back(cls_Hit(p_tdc, kTRUE, kTRUE, lchannel, tchannel, lastLiter->mFullTime, tTime));
             fhToT[p_tdc][tchannel/2-1]->Fill(tTime - lastLiter->mFullTime);
-            //fInputMessages[p_tdc][lchannel].erase(lastLiter); // FIXME !!! This line is actually needed, but it slows down the process so much!
-            ++tIter; // Go to the next trailing edge
+            fInputMessages[p_tdc][lchannel].erase(lastLiter); // FIXME !!! This line is actually needed, but it slows down the process so much!
             v_counterOfPairs++;
         } else {
             if (v_numOfEdgesFound == 0) v_counterOfTedgesWithoutLedge++;
             if (v_numOfEdgesFound > 1) v_counterOfTedgesWithMultipleLedges++;
-            ++tIter; // In any case go to the next trailing edge
+            v_counterOfSkippedLedges += v_numOfEdgesFound;
         }
     }
 
-    /*if (fVerbosityLevel > 0) {
-        v_logMessage << v_counterOfPairs << " pairs found;\t" << v_counterOfTedgesWithoutLedge << " trailing edges without a pair;\t"
-             << v_counterOfTedgesWithMultipleLedges << " trailing edges with multiple leading edges." << endl;
-        cout << v_logMessage.str();
-    }*/
+    if (fVerbosityLevel > 0) {
+        v_subMessage << "Found " << v_counterOfPairs << " pairs;";
+        v_logMessage << std::left << std::setw(22) << v_subMessage.str();
+        v_subMessage.str(std::string()); v_subMessage.clear();
 
-    fhPairsPerChannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2 - 1, v_counterOfPairs);
-    fhTedgesWithoutLedgeChannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2 - 1, v_counterOfTedgesWithoutLedge);
-    fhMultipleLedgesPerChannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2 - 1, v_counterOfTedgesWithMultipleLedges);
+        v_subMessage << v_counterOfTedgesWithoutLedge << " T edges wo pair;";
+        v_logMessage << std::left << std::setw(25) << v_subMessage.str();
+        v_subMessage.str(std::string()); v_subMessage.clear();
+
+        v_subMessage << v_counterOfSkippedLedges << " skipped L edges wo pair;";
+        v_logMessage << std::left << std::setw(32) << v_subMessage.str();
+        v_subMessage.str(std::string()); v_subMessage.clear();
+
+        v_subMessage << v_counterOfTedgesWithMultipleLedges << " T edges with multiple L edges.";
+        v_logMessage << std::left << std::setw(37) << v_subMessage.str();
+        v_subMessage.str(std::string()); v_subMessage.clear();
+
+        if (((Int_t)v_counterOfTedgesWithoutLedge - (Int_t)v_counterOfSkippedLedges) == LTdiff) {
+            v_logMessage << std::left << std::setw(10) << "+";
+        }
+
+        v_logMessage << endl;
+        cout << v_logMessage.str();
+    }
+
+    fhPairsPerChannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2, v_counterOfPairs);
+    fhTedgesWithoutLedgeChannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2, v_counterOfTedgesWithoutLedge);
+    fhMultipleLedgesPerChannel->SetBinContent(p_tdc*NUMHITCHs + tchannel/2, v_counterOfTedgesWithMultipleLedges);
 
     fInputMessages[p_tdc][lchannel].clear();
     fInputMessages[p_tdc][tchannel].clear();
@@ -371,7 +432,7 @@ UInt_t cls_EdgeMatcher::ExportMatchedEdges(TString p_filename)
     // DATA - beam detectors
     for (UInt_t i=0; i<4; i++) {
         for (UInt_t j=0; j<33; j++) {
-            std::vector<cls_Hit>::iterator iterBeamSignals;
+            std::list<cls_Hit>::iterator iterBeamSignals;
             for (iterBeamSignals=fOutputHitsBeamDetectors[i][j].begin();
                  iterBeamSignals!=fOutputHitsBeamDetectors[i][j].end(); ++iterBeamSignals)
             {
@@ -405,7 +466,7 @@ UInt_t cls_EdgeMatcher::ExportMatchedEdges(TString p_filename)
 
     // Data
     for (UInt_t i=0; i<NUMTDCs; i++) {
-        std::vector<cls_Hit>::iterator iterSyncSignals;
+        std::list<cls_Hit>::iterator iterSyncSignals;
         for (iterSyncSignals=fOutputHitsSync[i].begin(); iterSyncSignals!=fOutputHitsSync[i].end(); ++iterSyncSignals)
         {
             char v_buf[29];
@@ -568,7 +629,7 @@ void cls_EdgeMatcher::BuildEvents(void)
         v_outputTextFile.close();
     }
 
-    std::vector<cls_Hit>::iterator iter;
+    std::list<cls_Hit>::iterator iter;
 
     std::ofstream v_outputTextFileCh15;
     v_outputTextFileCh15.open("beamDetectors_ch15.txt");
@@ -595,8 +656,8 @@ void cls_EdgeMatcher::BuildEvents(void)
     }
     */
 
-    // Here we select the appropriate vector of trigger signals and event time window
-    std::vector<cls_Hit>* v_triggersUsed;
+    // Here we select the appropriate list of trigger signals and event time window
+    std::list<cls_Hit>* v_triggersUsed;
     Double_t v_eventLeftTimeWin;
     Double_t v_eventRightTimeWin;
 
@@ -637,7 +698,7 @@ void cls_EdgeMatcher::BuildEvents(void)
 
     // Loop over detected beam signals
     // First run - just to fill the histogram
-    std::vector<cls_Hit>::iterator iterBeamSignals;
+    std::list<cls_Hit>::iterator iterBeamSignals;
     for (iterBeamSignals=v_triggersUsed->begin(); iterBeamSignals!=v_triggersUsed->end(); ++iterBeamSignals) {
         Double_t trigTime = (*iterBeamSignals).GetMainTime();
 
@@ -687,7 +748,7 @@ void cls_EdgeMatcher::BuildEvents(void)
 
         // Loop over hits from the camera
         // Find those in the event time window, push them into the event
-        // object and erase from the initial vector
+        // object and erase from the initial list
         std::multimap<Double_t, cls_Hit>::iterator iterCameraHits;
         for (iterCameraHits=v_mapOfHits.begin(); iterCameraHits!=v_mapOfHits.end(); /*++iterCameraHits*/) {
             Double_t curTimestamp = (*iterCameraHits).first;
@@ -697,7 +758,7 @@ void cls_EdgeMatcher::BuildEvents(void)
                 break;
             }
             if (curTimestamp < leftBound) {
-                iterCameraHits = v_mapOfHits.erase(iterCameraHits);      // erase from the vector of hits
+                iterCameraHits = v_mapOfHits.erase(iterCameraHits);      // erase from the list of hits
                 counterRemovedBeforeWin++;
             } else {
                 if (curTimestamp >= leftBound && curTimestamp <= rightBound) {
@@ -706,7 +767,7 @@ void cls_EdgeMatcher::BuildEvents(void)
                     fhTriggerCorrelationInCut->Fill(curTimestamp - trigTime);
 
                     v_curEvent.AddHit((*iterCameraHits).second);            // add it to the current event and
-                    iterCameraHits = v_mapOfHits.erase(iterCameraHits);      // erase from the vector of hits
+                    iterCameraHits = v_mapOfHits.erase(iterCameraHits);      // erase from the list of hits
                 } else {
                     ++iterCameraHits;       // otherwise simply go to the next hit
                 }

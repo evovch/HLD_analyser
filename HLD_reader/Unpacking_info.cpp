@@ -22,12 +22,12 @@ cls_Unpacking_info::cls_Unpacking_info(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    mhEdgesPerTDC = new TH1D("mhEdgesPerTDC", "mhEdgesPerTDC", NUMTDCs, 0., (Double_t)NUMTDCs);
-    mhLaserPeriodL = new TH1D("mhLaserPeriodL", "mhLaserPeriodL", 10000, 0., 1.e8);
-    mhLaserPeriodT = new TH1D("mhLaserPeriodT", "mhLaserPeriodT", 10000, 0., 1.e8);
+    mhEdgesPerTDC = new TH1D("mhEdgesPerTDC", "mhEdgesPerTDC;TDC;Entries", NUMTDCs, 0., (Double_t)NUMTDCs);
+    mhLaserPeriodL = new TH1D("mhLaserPeriodL", "mhLaserPeriodL;ns;Entries", 10000, 0., 1.e8);
+    mhLaserPeriodT = new TH1D("mhLaserPeriodT", "mhLaserPeriodT;ns;Entries", 10000, 0., 1.e8);
 
-    mGoodMessagesPerChannel = new TH1D("mGoodMessagesPerChannel", "mGoodMessagesPerChannel", NUMTDCs*NUMCHs, 0., (Double_t)(NUMTDCs*NUMCHs));
-    mFaultyMessagesPerChannel = new TH1D("mFaultyMessagesPerChannel", "mFaultyMessagesPerChannel", NUMTDCs*NUMCHs, 0., (Double_t)(NUMTDCs*NUMCHs));
+    mGoodMessagesPerChannel = new TH1D("mGoodMessagesPerChannel", "mGoodMessagesPerChannel;Channel;Entries", NUMTDCs*NUMCHs, 0., (Double_t)(NUMTDCs*NUMCHs));
+    mFaultyMessagesPerChannel = new TH1D("mFaultyMessagesPerChannel", "mFaultyMessagesPerChannel;Channel;Entries", NUMTDCs*NUMCHs, 0., (Double_t)(NUMTDCs*NUMCHs));
 
     mCounterPerChannel = new TH1D("mCounterPerChannel", "mCounterPerChannel", 4*NUMCHs, 0., (Double_t)(4*NUMCHs));
 

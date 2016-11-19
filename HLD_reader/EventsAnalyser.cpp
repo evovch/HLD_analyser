@@ -362,11 +362,15 @@ void cls_EventsAnalyser::ProcessTRQ(std::vector<cls_Event>::iterator p_iterEvent
         }
     }
 
+    //UInt_t iFirst=0;
     // Leading edge difference for this TDC
     for (std::vector<cls_Hit>::iterator v_iterHits = (*p_iterEvents).mHits.begin(); v_iterHits != (*p_iterEvents).mHits.end(); ++v_iterHits) {
+        //iFirst++;
         if (!(IsTopRightQuarter((*v_iterHits).GetTDC()))) continue;
 
+        //UInt_t iSecond=0;
         for (std::vector<cls_Hit>::iterator v_iterHits2 = (*p_iterEvents).mHits.begin(); v_iterHits2 != (*p_iterEvents).mHits.end(); ++v_iterHits2) {
+            //iSecond++;
             if (!(IsTopRightQuarter((*v_iterHits2).GetTDC()))) continue;
 
             // Compute pixels unique ID
@@ -378,12 +382,22 @@ void cls_EventsAnalyser::ProcessTRQ(std::vector<cls_Event>::iterator p_iterEvent
 
             Double_t v_diff = (*v_iterHits2).GetLtime() - (*v_iterHits).GetLtime();
 
-            if (v_pixel2uid > v_pixel1uid)
+            if (v_pixel2uid > v_pixel1uid) {
                 fhLeadingEdgeDiffTopRightQuarter->Fill(v_diff);
-            else
+                //printf ("(%03d) %03d\t(%03d) %03d :\t%0.5f\t-\t%0.5f\t=\t%0.5f\tFlag=%d\t%0.5f\n",
+                //        iFirst, v_pixel1uid, iSecond, v_pixel2uid,
+                //        (*v_iterHits2).GetLtime(), (*v_iterHits).GetLtime(), v_diff,
+                //        (UInt_t)(v_pixel2uid > v_pixel1uid), v_diff);
+            } else {
                 fhLeadingEdgeDiffTopRightQuarter->Fill(-v_diff);
+                //printf ("(%03d) %03d\t(%03d) %03d :\t%0.5f\t-\t%0.5f\t=\t%0.5f\tFlag=%d\t%0.5f\n",
+                //        iFirst, v_pixel1uid, iSecond, v_pixel2uid,
+                //        (*v_iterHits2).GetLtime(), (*v_iterHits).GetLtime(), v_diff,
+                //        (UInt_t)(v_pixel2uid > v_pixel1uid), -v_diff);
+            }
         }
     }
+    //cout << "----------------------------------------------------------------------------------------" << endl;
 }
 
 // Only for top-right quarter! PMTs 1, 2, 5, 6.

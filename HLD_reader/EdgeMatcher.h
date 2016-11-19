@@ -1,7 +1,7 @@
 #ifndef EDGEMATCHER_H
 #define EDGEMATCHER_H
 
-#include <vector>
+#include <list>
 #include <map>
 
 #include <QString>
@@ -43,12 +43,12 @@ public: // methods
 private: // data members
     // Input raw messages orginized per-channel.
     // This allows parallel processing without any additional cost.
-    std::vector<cls_RawMessage> fInputMessages[NUMTDCs][NUMCHs];
+    std::list<cls_RawMessage> fInputMessages[NUMTDCs][NUMCHs];
 
     // Output hits orginized per-channel.
-    std::vector<cls_Hit> fOutputHits[NUMTDCs-4][NUMHITCHs];
-    std::vector<cls_Hit> fOutputHitsBeamDetectors[4][NUMCHs];
-    std::vector<cls_Hit> fOutputHitsSync[NUMTDCs];
+    std::list<cls_Hit> fOutputHits[NUMTDCs-4][NUMHITCHs];
+    std::list<cls_Hit> fOutputHitsBeamDetectors[4][NUMCHs];
+    std::list<cls_Hit> fOutputHitsSync[NUMTDCs];
 
 private: // data members
     static UInt_t fVerbosityLevel;

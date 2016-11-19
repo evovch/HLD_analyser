@@ -19,15 +19,15 @@ const Double_t DIRECTTDCPAIRPOSWIN = 12.;   // for positive ToT
 
 // Event building parameters
 // laser
-const Double_t EVENTNEGATIVEWINLASER =  1000.;     // minus is added automatically. negative value here means positive!
-const Double_t EVENTPOSITIVEWINLASER =  1000.;
+const Double_t EVENTNEGATIVEWINLASER = -6517030.;     // minus is added automatically. negative value here means positive!
+const Double_t EVENTPOSITIVEWINLASER =  6517110.;
 
 // hodo coincidence
 const Double_t EVENTNEGATIVEWINHODO = 1000.;     // minus is added automatically. negative value here means positive!
 const Double_t EVENTPOSITIVEWINHODO = 1000.;
 
-const Double_t EVENTWINHISTOL =  1000.;
-const Double_t EVENTWINHISTOR =  1000.;
+const Double_t EVENTWINHISTOL = -6515000.;
+const Double_t EVENTWINHISTOR =  6525000.;
 
 // lab data analysis
 const Double_t EVENTNEGATIVEWINLAB = 100.;
