@@ -26,8 +26,8 @@ const Double_t EVENTPOSITIVEWINLASER =  6517110.;
 const Double_t EVENTNEGATIVEWINHODO = 1000.;     // minus is added automatically. negative value here means positive!
 const Double_t EVENTPOSITIVEWINHODO = 1000.;
 
-const Double_t EVENTWINHISTOL = -6515000.;
-const Double_t EVENTWINHISTOR =  6525000.;
+const Double_t EVENTWINHISTOL =  200.; // -6515000.;
+const Double_t EVENTWINHISTOR =  200.; //  6525000.;
 
 // lab data analysis
 const Double_t EVENTNEGATIVEWINLAB = 100.;

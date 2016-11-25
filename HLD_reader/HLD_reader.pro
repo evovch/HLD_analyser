@@ -96,4 +96,5 @@ DISTFILES += \
     batch_rings_nocalib_corr.sh \
     batch_rings_nocalib_nocorr.sh \
     batch_buildCorrections.sh \
-    batch_direct_tdc.sh
+    batch_direct_tdc.sh \
+    batch_lab_calib_nocorr.sh

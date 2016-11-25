@@ -132,7 +132,8 @@ void cls_MainWindow::PostprocessConfig(void)
             if (ui->leCalibFile->text().endsWith("/")) {
                 QString v_origtext = ui->leCalibFile->text();
                 v_origtext += "calib_";
-                v_origtext += v_basename;
+                //v_origtext += v_basename;
+                v_origtext += "sum";
                 v_origtext += ".root";
                 ui->leCalibFile->setText(v_origtext);
             }
@@ -484,21 +485,23 @@ void cls_MainWindow::BatchLabAnalysisCalibNoCorr(void)
     ui->rbTDC10sync->setChecked(true);
 
     this->ImportConfig();
-    this->GenFilenames();
+    //this->GenFilenames();
     this->ImportCalibration();
 
     this->ImportFile();
     this->ExportUnpackInfo();
+
     this->RunEdgeMatcher();
     this->ExportMatchedEdges();
     this->ExportEdgeMatcherInfo();
     this->RunEventBuilder();
     this->ExportEventBuildingInfo();
-
+/*
     //TODO
     this->RunLaserAnalyser();
     this->ExportAnalysisInfo();
     this->ExportCorrections();
+*/
     cout << "FINISHED BATCH" << endl;
 }
 

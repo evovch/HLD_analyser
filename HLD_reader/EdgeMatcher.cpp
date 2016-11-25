@@ -47,8 +47,12 @@ cls_EdgeMatcher::cls_EdgeMatcher()
 
     // Event building histograms
     fhTriggerCorrelation = new TH1D("fhTriggerCorrelation", "fhTriggerCorrelation;ns;Entries", 2000, -EVENTWINHISTOL, EVENTWINHISTOR);
-    fhTriggerCorrelationInCut = new TH1D("fhTriggerCorrelationInCut", "fhTriggerCorrelationInCut;ns;Entries", 2000, -EVENTWINHISTOL, EVENTWINHISTOR);
+    fhTriggerCorrelationInEvent = new TH1D("fhTriggerCorrelationInEvent", "fhTriggerCorrelationInEvent;ns;Entries", 2000, -EVENTWINHISTOL, EVENTWINHISTOR);
+    fhTriggerCorrelationLarge = new TH1D("fhTriggerCorrelationLarge", "fhTriggerCorrelationLarge;ns;Entries", 10000, 0., 1000000.);
+    fhTriggerCorrelationInNoiseWin = new TH1D("fhTriggerCorrelationInNoiseWin", "fhTriggerCorrelationInNoiseWin;ns;Entries", 10000, 0., 1000000.);
     fhNumOfHitsInEvent = new TH1D("fhNumOfHitsInEvent", "fhNumOfHitsInEvent;Number of hits;Entries", 250, 0., 250.);
+    fhPairsPerChannelInEvent = new TH1D("fhPairsPerChannelInEvent", "fhPairsPerChannelInEvent;Channel;Entries", nbins, 0., (Double_t)nbins);
+    fhPairsPerChannelInNoiseWin = new TH1D("fhPairsPerChannelInNoiseWin", "fhPairsPerChannelInNoiseWin;Channel;Entries", nbins, 0., (Double_t)nbins);
 }
 
 cls_EdgeMatcher::~cls_EdgeMatcher()
@@ -66,8 +70,11 @@ cls_EdgeMatcher::~cls_EdgeMatcher()
     delete fhMultipleLedgesPerChannel;
 
     delete fhTriggerCorrelation;
-    delete fhTriggerCorrelationInCut;
+    delete fhTriggerCorrelationInEvent;
+    delete fhTriggerCorrelationLarge;
+    delete fhTriggerCorrelationInNoiseWin;
     delete fhNumOfHitsInEvent;
+    delete fhPairsPerChannelInEvent;
 }
 
 void cls_EdgeMatcher::Process(void)
@@ -691,7 +698,7 @@ void cls_EdgeMatcher::BuildEvents(void)
         }
     }
 
-    cout << "First run" << endl;
+    cout << "Run 1/4" << endl;
 
     // At the beginning - start from the beginning of the hits map
     std::multimap<Double_t, cls_Hit>::iterator lastIterCameraHits = v_mapOfHits.begin();
@@ -715,8 +722,7 @@ void cls_EdgeMatcher::BuildEvents(void)
                 break;
             }
         }
-        // after this loop the iterCameraHits iterator is before the trigget window
-
+        // after this loop the iterCameraHits iterator is before the trigger window
 
         for (/*no action here*/; iterCameraHits!=v_mapOfHits.end(); ++iterCameraHits) {
             Double_t curTimestamp = (*iterCameraHits).first;
@@ -733,7 +739,83 @@ void cls_EdgeMatcher::BuildEvents(void)
         }
     }
 
-    cout << "Second run" << endl;
+    cout << "Run 2/4" << endl;
+
+    lastIterCameraHits = v_mapOfHits.begin();
+    for (iterBeamSignals=v_triggersUsed->begin(); iterBeamSignals!=v_triggersUsed->end(); ++iterBeamSignals) {
+        Double_t trigTime = (*iterBeamSignals).GetMainTime();
+
+        //cout << "Trigger " << trigTime << endl;
+
+        // Loop over hits from the camera
+        std::multimap<Double_t, cls_Hit>::iterator iterCameraHits;
+
+        for (iterCameraHits=lastIterCameraHits; iterCameraHits!=v_mapOfHits.begin(); --iterCameraHits) {
+            Double_t curTimestamp = (*iterCameraHits).first;
+
+            // As soon as we get one step left from the left window boundary - stop searching
+            if (curTimestamp < trigTime+0.) {
+                break;
+            }
+        }
+        // after this loop the iterCameraHits iterator is before the trigget window
+
+        for (/*no action here*/; iterCameraHits!=v_mapOfHits.end(); ++iterCameraHits) {
+            Double_t curTimestamp = (*iterCameraHits).first;
+
+            if (curTimestamp < trigTime+0.) {   // before the window - skip
+                continue;
+            }
+            if (curTimestamp > trigTime+1000000.) {   // after the window - skip
+                // store the first unused hit in the map after the right window bound
+                lastIterCameraHits = iterCameraHits;
+                break;
+            }
+            fhTriggerCorrelationLarge->Fill(curTimestamp - trigTime);    // in the window - account
+        }
+    }
+
+    cout << "Run 3/4" << endl;
+
+    lastIterCameraHits = v_mapOfHits.begin();
+    for (iterBeamSignals=v_triggersUsed->begin(); iterBeamSignals!=v_triggersUsed->end(); ++iterBeamSignals) {
+        Double_t trigTime = (*iterBeamSignals).GetMainTime();
+
+        //cout << "Trigger " << trigTime << endl;
+
+        // Loop over hits from the camera
+        std::multimap<Double_t, cls_Hit>::iterator iterCameraHits;
+
+        for (iterCameraHits=lastIterCameraHits; iterCameraHits!=v_mapOfHits.begin(); --iterCameraHits) {
+            Double_t curTimestamp = (*iterCameraHits).first;
+
+            // As soon as we get one step left from the left window boundary - stop searching
+            if (curTimestamp < trigTime+0.) {
+                break;
+            }
+        }
+        // after this loop the iterCameraHits iterator is before the trigget window
+
+        for (/*no action here*/; iterCameraHits!=v_mapOfHits.end(); ++iterCameraHits) {
+            Double_t curTimestamp = (*iterCameraHits).first;
+
+            if (curTimestamp < trigTime+40000.) {   // before the window - skip
+                continue;
+            }
+            if (curTimestamp > trigTime+140000.) {   // after the window - skip
+                // store the first unused hit in the map after the right window bound
+                lastIterCameraHits = iterCameraHits;
+                break;
+            }
+            fhTriggerCorrelationInNoiseWin->Fill(curTimestamp - trigTime);    // in the window - account
+
+            UInt_t v_tdc = (*iterCameraHits).second.GetTDC();
+            UInt_t v_tchannel = (*iterCameraHits).second.GetTch();
+            fhPairsPerChannelInNoiseWin->Fill(v_tdc*NUMHITCHs + v_tchannel/2 - 0.5);
+        }
+    }
+
+    cout << "Run 4/4" << endl;
 
     // Loop over detected beam signals
     // Second run - per-se build the events (erase the input hits)
@@ -764,7 +846,11 @@ void cls_EdgeMatcher::BuildEvents(void)
                 if (curTimestamp >= leftBound && curTimestamp <= rightBound) {
                     // Hit is in the event window
 
-                    fhTriggerCorrelationInCut->Fill(curTimestamp - trigTime);
+                    fhTriggerCorrelationInEvent->Fill(curTimestamp - trigTime);
+
+                    UInt_t v_tdc = (*iterCameraHits).second.GetTDC();
+                    UInt_t v_tchannel = (*iterCameraHits).second.GetTch();
+                    fhPairsPerChannelInEvent->Fill(v_tdc*NUMHITCHs + v_tchannel/2 - 0.5);
 
                     v_curEvent.AddHit((*iterCameraHits).second);            // add it to the current event and
                     iterCameraHits = v_mapOfHits.erase(iterCameraHits);      // erase from the list of hits
@@ -804,8 +890,12 @@ UInt_t cls_EdgeMatcher::ExportEventBuildingHistos(TString p_filename)
     }
 
     fhTriggerCorrelation->Write();
-    fhTriggerCorrelationInCut->Write();
+    fhTriggerCorrelationInEvent->Write();
+    fhTriggerCorrelationLarge->Write();
+    fhTriggerCorrelationInNoiseWin->Write();
     fhNumOfHitsInEvent->Write();
+    fhPairsPerChannelInEvent->Write();
+    fhPairsPerChannelInNoiseWin->Write();
 
     v_outputFile.Close();
 

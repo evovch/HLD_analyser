@@ -57,8 +57,12 @@ private: // data members
 
     // Event building statistics
     TH1D* fhTriggerCorrelation;
-    TH1D* fhTriggerCorrelationInCut;
+    TH1D* fhTriggerCorrelationInEvent;
+    TH1D* fhTriggerCorrelationLarge;
+    TH1D* fhTriggerCorrelationInNoiseWin;
     TH1D* fhNumOfHitsInEvent;
+    TH1D* fhPairsPerChannelInEvent;
+    TH1D* fhPairsPerChannelInNoiseWin;
 
     // Basic edge matching statistics
     TH1D* fhMessagesPerLchannel;
