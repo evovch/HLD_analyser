@@ -2,7 +2,10 @@
 
 DIR=/home/evovch/Documents/Analysis_Sep2016/directTDC/config/
 
-MODE=direct_tdc_global_pseudocalib
+MODE=direct_tdc_individ_pseudocalib
+#MODE=direct_tdc_global_pseudocalib
+#MODE=direct_tdc_calib
+#MODE=direct_tdc_nocalib
 
 for CFGFILE in ${DIR}*.cfg
 do

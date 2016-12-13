@@ -15,10 +15,10 @@ cls_DirectTDCanalyser::cls_DirectTDCanalyser()
     for (UInt_t i=0; i<16; i++) {
         histoName.Form("ToT_ch%d", i+1);
         histoTitle.Form("ToT_ch%d", i+1);
-        fhToT[i] = new TH1D(histoName, histoTitle, 100*(DIRECTTDCPAIRPOSWIN+DIRECTTDCPAIRNEGWIN), -DIRECTTDCPAIRNEGWIN, DIRECTTDCPAIRPOSWIN);
+        fhToT[i] = new TH1D(histoName, histoTitle, 400*(DIRECTTDCPAIRPOSWIN+DIRECTTDCPAIRNEGWIN), -DIRECTTDCPAIRNEGWIN, DIRECTTDCPAIRPOSWIN);
         histoName.Form("LeadingEdgeDiff_ch%d", i+1);
         histoTitle.Form("LeadingEdgeDiff_ch%d", i+1);
-        fhLeadingEdgeDiff[i] = new TH1D(histoName, histoTitle, 100.*4., -2., 2.);
+        fhLeadingEdgeDiff[i] = new TH1D(histoName, histoTitle, 400.*4., -2., 2.);
     }
 
     fhSyncMessages = new TH1D("fhSyncMessages", "fhSyncMessages", NUMTDCs-4, 0., (Double_t)(NUMTDCs-4));
