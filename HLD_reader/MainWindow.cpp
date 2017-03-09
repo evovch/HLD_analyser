@@ -235,18 +235,18 @@ void cls_MainWindow::GenFilenames(void)
     v_token = v_tokens.rbegin();
     QString v_basename = (*v_token);
 
-    QString v_calibPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/calibration_files/calib_");
-    QString v_hitsPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/hits_files/hits_");
-    QString v_unpackingInfoPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/analysis_results/unpack_info_");
-    QString v_edgeMatchingInfoPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/analysis_results/edgematch_info_");
-    QString v_evbldInfoPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/analysis_results/evbld_info_");
-    QString v_analysisInfoPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/analysis_results/analysis_info_");
-    QString v_correctionsPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/corrections/corrections_");
-    QString v_ringsAnalysisInfoPath("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/analysis_results/analysis_info_");
+    QString v_calibPath("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/calibration_files/calib_");
+    QString v_hitsPath("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/hits_files/hits_");
+    QString v_unpackingInfoPath("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/analysis_results/unpack_info_");
+    QString v_edgeMatchingInfoPath("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/analysis_results/edgematch_info_");
+    QString v_evbldInfoPath("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/analysis_results/evbld_info_");
+    QString v_analysisInfoPath("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/analysis_results/analysis_info_");
+    QString v_correctionsPath("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/corrections/corrections_");
+    QString v_ringsAnalysisInfoPath("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/analysis_results/analysis_info_");
 
     if (v_basename.endsWith(".hld")) {
 
-        v_calibPath += "sum";                  v_calibPath += ".root";
+        v_calibPath += "sum";                       v_calibPath += ".root";                      // "sum" // v_basename
         v_hitsPath += v_basename;                   v_hitsPath += ".hits";
         v_unpackingInfoPath += v_basename;          v_unpackingInfoPath += ".root";
         v_edgeMatchingInfoPath += v_basename;       v_edgeMatchingInfoPath += ".root";
@@ -558,7 +558,7 @@ void cls_MainWindow::BatchLaserAnalysisNoCalibCorr(void)
     this->SetNoCalibration();
 
     QString v_oldCorrTableFile(ui->leCorrectionsFile->text());
-    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/correction_to_use/corrections.txt");
+    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/corrections_laser_calib.txt");
     this->ImportCorrections();
     ui->leCorrectionsFile->setText(v_oldCorrTableFile);
 
@@ -584,7 +584,7 @@ void cls_MainWindow::BatchLaserAnalysisCalibCorr(void)
     this->ImportCalibration();
 
     QString v_oldCorrTableFile(ui->leCorrectionsFile->text());
-    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/correction_to_use/corrections.txt");
+    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/corrections_laser_calib.txt");
     this->ImportCorrections();
     ui->leCorrectionsFile->setText(v_oldCorrTableFile);
 
@@ -644,7 +644,7 @@ void cls_MainWindow::BatchRingsAnalysisNoCalibCorr(void)
     this->SetNoCalibration();
 
     QString v_oldCorrTableFile(ui->leCorrectionsFile->text());
-    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/correction_to_use/corrections.txt");
+    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/corrections_laser_calib.txt");
     this->ImportCorrections();
     ui->leCorrectionsFile->setText(v_oldCorrTableFile);
 
@@ -666,7 +666,7 @@ void cls_MainWindow::BatchRingsAnalysisCalibCorr(void)
     this->ImportCalibration();
 
     QString v_oldCorrTableFile(ui->leCorrectionsFile->text());
-    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/correction_to_use/corrections.txt");
+    ui->leCorrectionsFile->setText("/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/corrections_laser_calib.txt");
     this->ImportCorrections();
     ui->leCorrectionsFile->setText(v_oldCorrTableFile);
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=/home/evovch/Documents/Analysis_Sep2016/time_precision_evolution/config/
+DIR=/home/evovch/Documents/Analysis_Sep2016/Time_precision_evolution_mar2017/config/
 
 for CFGFILE in ${DIR}*
 do

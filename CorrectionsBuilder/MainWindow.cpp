@@ -77,7 +77,7 @@ UInt_t cls_MainWindow::ImportAnalysisRes(void)
     // Loop over only the first set of hitograms
     UInt_t v_pixel1=0;
     TString v_dirName;
-    v_dirName.Form("LeadingEdgeDiff_ID1_%02d", v_pixel1);
+    v_dirName.Form("LeadingEdgeDiff/LeadingEdgeDiff_ID1_%02d", v_pixel1);
 
     fCorrections[0] = 0.; // overwrite to be on the safe side
 

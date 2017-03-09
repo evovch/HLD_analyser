@@ -343,8 +343,8 @@ Double_t cls_Calibrator::GetFullTime(UInt_t p_tdcId, UInt_t p_ch, UInt_t p_epoch
 Double_t cls_Calibrator::GetFittedFineTime(UInt_t p_tdcUID, UInt_t p_ch, UInt_t p_fine)
 {
     // Temporary set the fitting params to constant
-    Double_t A = fFitParams[p_tdcUID][p_ch][0]; // fFitParams[p_tdcUID][p_ch][0] // 27.44
-    Double_t B = fFitParams[p_tdcUID][p_ch][1]; // fFitParams[p_tdcUID][p_ch][1] // 507.6
+    Double_t A = fFitParams[p_tdcUID][p_ch][0]; // 27.43
+    Double_t B = fFitParams[p_tdcUID][p_ch][1]; // 484.4
 
     if (p_fine < A) {
         return 0.;

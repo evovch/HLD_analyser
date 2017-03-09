@@ -43,9 +43,14 @@ private:
 
     // Only for top-right quarter
     TH1D* fhLeadingEdgeDiffMean;                // Mean of all fhLeadingEdgeDiff distributions for 4 top-right quarter PMTs
+
     TH1D* fhLeadingEdgeDiffOnePMT[4];           // Sum for 4 top-right quarter PMTs separately
     TH1D* fhLeadingEdgeDiffOnePADIWA[16];       // Sum for 16 top-right quarter PADIWAs separately
     TH1D* fhLeadingEdgeDiffTopRightQuarter;     // Sum for 4 top-right quarter PMTs together - same as 16 top-right quarter PADIWAs
+
+    TH1D* fhLeadingEdgeDiffOnePMTSymm[4];           // Sum for 4 top-right quarter PMTs separately
+    TH1D* fhLeadingEdgeDiffOnePADIWASymm[16];       // Sum for 16 top-right quarter PADIWAs separately
+    TH1D* fhLeadingEdgeDiffTopRightQuarterSymm;     // Sum for 4 top-right quarter PMTs together - same as 16 top-right quarter PADIWAs
 
     // ----------------------------------------------------------------------------------------------------------------------------------
     // With filtering bad channels
@@ -56,14 +61,20 @@ private:
 
     // Only for top-right quarter
     TH1D* fhLeadingEdgeDiffMeanGood;            // Mean of all fhLeadingEdgeDiff distributions for 4 top-right quarter PMTs
+
     TH1D* fhLeadingEdgeDiffOnePMTGood[4];       // Sum for 4 top-right quarter PMTs separately
     TH1D* fhLeadingEdgeDiffOnePADIWAGood[16];   // Sum for 16 top-right quarter PADIWAs separately
     TH1D* fhLeadingEdgeDiffTopRightQuarterGood; // Sum for 4 top-right quarter PMTs together
+
+    TH1D* fhLeadingEdgeDiffOnePMTGoodSymm[4];       // Sum for 4 top-right quarter PMTs separately
+    TH1D* fhLeadingEdgeDiffOnePADIWAGoodSymm[16];   // Sum for 16 top-right quarter PADIWAs separately
+    TH1D* fhLeadingEdgeDiffTopRightQuarterGoodSymm; // Sum for 4 top-right quarter PMTs together
 
     // ----------------------------------------------------------------------------------------------------------------------------------
     // fhLeadingEdgeDiff for each pair of pixels is here after all the other histograms
 
     TH1D* fhLeadingEdgeDiff[256][256];          // For each pair
+    TH1D* fhLeadingEdgeDiffSymm[256][256];          // For each pair
 
 };
 

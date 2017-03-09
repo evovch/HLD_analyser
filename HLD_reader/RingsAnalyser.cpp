@@ -55,14 +55,21 @@ cls_RingsAnalyser::cls_RingsAnalyser()
         v_histoName.Form("fhLeadingEdgeDiffOnePMT_%d", v_pmt);
         v_histoTitle.Form("fhLeadingEdgeDiffOnePMT_%d;ns;Entries", v_pmt);
         fhLeadingEdgeDiffOnePMT[v_pmt] = new TH1D(v_histoName.Data(), v_histoTitle.Data(), 2400, -60., 60.);
+        v_histoName.Form("fhLeadingEdgeDiffOnePMTSymm_%d", v_pmt);
+        v_histoTitle.Form("fhLeadingEdgeDiffOnePMTSymm_%d;ns;Entries", v_pmt);
+        fhLeadingEdgeDiffOnePMTSymm[v_pmt] = new TH1D(v_histoName.Data(), v_histoTitle.Data(), 2400, -60., 60.);
     }
     for (UInt_t v_padiwa=0; v_padiwa<16; v_padiwa++) {
         v_histoName.Form("fhLeadingEdgeDiffOnePADIWA_%d", v_padiwa);
         v_histoTitle.Form("fhLeadingEdgeDiffOnePADIWA_%d;ns;Entries", v_padiwa);
         fhLeadingEdgeDiffOnePADIWA[v_padiwa] = new TH1D(v_histoName.Data(), v_histoTitle.Data(), 2400, -60., 60.);
+        v_histoName.Form("fhLeadingEdgeDiffOnePADIWASymm_%d", v_padiwa);
+        v_histoTitle.Form("fhLeadingEdgeDiffOnePADIWASymm_%d;ns;Entries", v_padiwa);
+        fhLeadingEdgeDiffOnePADIWASymm[v_padiwa] = new TH1D(v_histoName.Data(), v_histoTitle.Data(), 2400, -60., 60.);
     }
 
     fhLeadingEdgeDiffTopRightQuarter = new TH1D("fhLeadingEdgeDiffTopRightQuarter", "fhLeadingEdgeDiffTopRightQuarter;ns;Entries", 2400, -60., 60.);
+    fhLeadingEdgeDiffTopRightQuarterSymm = new TH1D("fhLeadingEdgeDiffTopRightQuarterSymm", "fhLeadingEdgeDiffTopRightQuarterSymm;ns;Entries", 2400, -60., 60.);
 
     // ----------------------------------------------------------------------------------------------------------------------------------
     // With filtering bad channels
@@ -85,14 +92,21 @@ cls_RingsAnalyser::cls_RingsAnalyser()
         v_histoName.Form("fhLeadingEdgeDiffOnePMTGood_%d", v_pmt);
         v_histoTitle.Form("fhLeadingEdgeDiffOnePMTGood_%d;ns;Entries", v_pmt);
         fhLeadingEdgeDiffOnePMTGood[v_pmt] = new TH1D(v_histoName.Data(), v_histoTitle.Data(), 2400, -60., 60.);
+        v_histoName.Form("fhLeadingEdgeDiffOnePMTGoodSymm_%d", v_pmt);
+        v_histoTitle.Form("fhLeadingEdgeDiffOnePMTGoodSymm_%d;ns;Entries", v_pmt);
+        fhLeadingEdgeDiffOnePMTGoodSymm[v_pmt] = new TH1D(v_histoName.Data(), v_histoTitle.Data(), 2400, -60., 60.);
     }
     for (UInt_t v_padiwa=0; v_padiwa<16; v_padiwa++) {
         v_histoName.Form("fhLeadingEdgeDiffOnePADIWAGood_%d", v_padiwa);
         v_histoTitle.Form("fhLeadingEdgeDiffOnePADIWAGood_%d;ns;Entries", v_padiwa);
         fhLeadingEdgeDiffOnePADIWAGood[v_padiwa] = new TH1D(v_histoName.Data(), v_histoTitle.Data(), 2400, -60., 60.);
+        v_histoName.Form("fhLeadingEdgeDiffOnePADIWAGoodSymm_%d", v_padiwa);
+        v_histoTitle.Form("fhLeadingEdgeDiffOnePADIWAGoodSymm_%d;ns;Entries", v_padiwa);
+        fhLeadingEdgeDiffOnePADIWAGoodSymm[v_padiwa] = new TH1D(v_histoName.Data(), v_histoTitle.Data(), 2400, -60., 60.);
     }
 
     fhLeadingEdgeDiffTopRightQuarterGood = new TH1D("fhLeadingEdgeDiffTopRightQuarterGood", "fhLeadingEdgeDiffTopRightQuarterGood;ns;Entries", 2400, -60., 60.);
+    fhLeadingEdgeDiffTopRightQuarterGoodSymm = new TH1D("fhLeadingEdgeDiffTopRightQuarterGoodSymm", "fhLeadingEdgeDiffTopRightQuarterGoodSymm;ns;Entries", 2400, -60., 60.);
 
     // ----------------------------------------------------------------------------------------------------------------------------------
     // fhLeadingEdgeDiff for each pair of pixels is here after all the other histograms
@@ -102,6 +116,9 @@ cls_RingsAnalyser::cls_RingsAnalyser()
             v_histoName.Form("fhLeadingEdgeDiff_ID1_%02d_ID2_%02d", v_pixel1, v_pixel2);
             v_histoTitle.Form("fhLeadingEdgeDiff_ID1_%02d_ID2_%02d;ns;Entries", v_pixel1, v_pixel2);
             fhLeadingEdgeDiff[v_pixel1][v_pixel2] = new TH1D(v_histoName.Data(), v_histoTitle.Data(), 1200, -30., 30.);
+            v_histoName.Form("fhLeadingEdgeDiffSymm_ID1_%02d_ID2_%02d", v_pixel1, v_pixel2);
+            v_histoTitle.Form("fhLeadingEdgeDiffSymm_ID1_%02d_ID2_%02d;ns;Entries", v_pixel1, v_pixel2);
+            fhLeadingEdgeDiffSymm[v_pixel1][v_pixel2] = new TH1D(v_histoName.Data(), v_histoTitle.Data(), 1200, -30., 30.);
         }
     }
 
@@ -136,12 +153,15 @@ cls_RingsAnalyser::~cls_RingsAnalyser()
 
     for (UInt_t v_pmt=0; v_pmt<4; v_pmt++) {
         delete fhLeadingEdgeDiffOnePMT[v_pmt];
+        delete fhLeadingEdgeDiffOnePMTSymm[v_pmt];
     }
     for (UInt_t v_padiwa=0; v_padiwa<16; v_padiwa++) {
         delete fhLeadingEdgeDiffOnePADIWA[v_padiwa];
+        delete fhLeadingEdgeDiffOnePADIWASymm[v_padiwa];
     }
 
     delete fhLeadingEdgeDiffTopRightQuarter;
+    delete fhLeadingEdgeDiffTopRightQuarterSymm;
 
     // ----------------------------------------------------------------------------------------------------------------------------------
     // With filtering bad channels
@@ -158,12 +178,15 @@ cls_RingsAnalyser::~cls_RingsAnalyser()
 
     for (UInt_t v_pmt=0; v_pmt<4; v_pmt++) {
         delete fhLeadingEdgeDiffOnePMTGood[v_pmt];
+        delete fhLeadingEdgeDiffOnePMTGoodSymm[v_pmt];
     }
     for (UInt_t v_padiwa=0; v_padiwa<16; v_padiwa++) {
         delete fhLeadingEdgeDiffOnePADIWAGood[v_padiwa];
+        delete fhLeadingEdgeDiffOnePADIWAGoodSymm[v_padiwa];
     }
 
     delete fhLeadingEdgeDiffTopRightQuarterGood;
+    delete fhLeadingEdgeDiffTopRightQuarterGoodSymm;
 
     // ----------------------------------------------------------------------------------------------------------------------------------
     // fhLeadingEdgeDiff for each pair of pixels is here after all the other histograms
@@ -171,6 +194,7 @@ cls_RingsAnalyser::~cls_RingsAnalyser()
     for (UInt_t v_pixel1=0; v_pixel1<256-1; v_pixel1++) {
         for (UInt_t v_pixel2=v_pixel1+1; v_pixel2<256; v_pixel2++) {
             delete fhLeadingEdgeDiff[v_pixel1][v_pixel2];
+            delete fhLeadingEdgeDiffSymm[v_pixel1][v_pixel2];
         }
     }
 
@@ -325,16 +349,16 @@ void cls_RingsAnalyser::ProcessOneRing(CbmRichRingLight* p_theRing, std::vector<
     //TODO
     // cut on the ring center and radius
     // pos G
-    //if (p_theRing->GetRadius() < 4. || p_theRing->GetRadius() > 5.5 ||
-    //    p_theRing->GetCenterX() < 15.2 || p_theRing->GetCenterX() > 17.5 ||
-    //    p_theRing->GetCenterY() < 15.5 || p_theRing->GetCenterY() > 17.7) {
-    //    // skipping the ring
+    if (p_theRing->GetRadius() < 4. || p_theRing->GetRadius() > 5.5 ||
+        p_theRing->GetCenterX() < 15.2 || p_theRing->GetCenterX() > 17.5 ||
+        p_theRing->GetCenterY() < 15.5 || p_theRing->GetCenterY() > 17.7) {
+        // skipping the ring
 
     // pos GH
-    if (p_theRing->GetRadius() < 4.45 || p_theRing->GetRadius() > 4.8 ||
-        p_theRing->GetCenterX() < 15.2 || p_theRing->GetCenterX() > 17.5 ||
-        p_theRing->GetCenterY() < 13.2 || p_theRing->GetCenterY() > 14.6) {
-        // skipping the ring
+    //if (p_theRing->GetRadius() < 4.45 || p_theRing->GetRadius() > 4.8 ||
+    //    p_theRing->GetCenterX() < 15.2 || p_theRing->GetCenterX() > 17.5 ||
+    //    p_theRing->GetCenterY() < 13.2 || p_theRing->GetCenterY() > 14.6) {
+    //    // skipping the ring
     } else {
 
         // Statistics after applying the cut
@@ -475,6 +499,8 @@ void cls_RingsAnalyser::ProcessPerTDC(std::vector<cls_Event>::iterator p_iterEve
 
             Double_t v_diff = (*v_iterHits2).GetLtime() - (*v_iterHits).GetLtime();
 
+            fhLeadingEdgeDiffOnePADIWASymm[p_histoIndex]->Fill(v_diff);
+
             if (v_pixel2uid > v_pixel1uid)
                 fhLeadingEdgeDiffOnePADIWA[p_histoIndex]->Fill(v_diff);
             else
@@ -531,6 +557,8 @@ void cls_RingsAnalyser::ProcessPerPMT(std::vector<cls_Event>::iterator p_iterEve
 
             Double_t v_diff = (*v_iterHits2).GetLtime() - (*v_iterHits).GetLtime();
 
+            fhLeadingEdgeDiffOnePMTSymm[p_histoIndex]->Fill(v_diff);
+
             if (v_pixel2uid > v_pixel1uid)
                 fhLeadingEdgeDiffOnePMT[p_histoIndex]->Fill(v_diff);
             else
@@ -585,6 +613,8 @@ void cls_RingsAnalyser::ProcessTRQ(std::vector<cls_Event>::iterator p_iterEvents
             if (v_pixel1uid == v_pixel2uid) continue;
 
             Double_t v_diff = (*v_iterHits2).GetLtime() - (*v_iterHits).GetLtime();
+
+            fhLeadingEdgeDiffTopRightQuarterSymm->Fill(v_diff);
 
             if (v_pixel2uid > v_pixel1uid)
                 fhLeadingEdgeDiffTopRightQuarter->Fill(v_diff);
@@ -649,6 +679,8 @@ void cls_RingsAnalyser::ProcessPerTDCGood(std::vector<cls_Event>::iterator p_ite
 
             Double_t v_diff = (*v_iterHits2).GetLtime() - (*v_iterHits).GetLtime();
 
+            fhLeadingEdgeDiffOnePADIWAGoodSymm[p_histoIndex]->Fill(v_diff);
+
             if (v_pixel2uid > v_pixel1uid)
                 fhLeadingEdgeDiffOnePADIWAGood[p_histoIndex]->Fill(v_diff);
             else
@@ -711,6 +743,8 @@ void cls_RingsAnalyser::ProcessPerPMTGood(std::vector<cls_Event>::iterator p_ite
 
             Double_t v_diff = (*v_iterHits2).GetLtime() - (*v_iterHits).GetLtime();
 
+            fhLeadingEdgeDiffOnePMTGoodSymm[p_histoIndex]->Fill(v_diff);
+
             if (v_pixel2uid > v_pixel1uid)
                 fhLeadingEdgeDiffOnePMTGood[p_histoIndex]->Fill(v_diff);
             else
@@ -772,6 +806,8 @@ void cls_RingsAnalyser::ProcessTRQGood(std::vector<cls_Event>::iterator p_iterEv
 
             Double_t v_diff = (*v_iterHits2).GetLtime() - (*v_iterHits).GetLtime();
 
+            fhLeadingEdgeDiffTopRightQuarterGoodSymm->Fill(v_diff);
+
             if (v_pixel2uid > v_pixel1uid)
                 fhLeadingEdgeDiffTopRightQuarterGood->Fill(v_diff);
             else
@@ -801,6 +837,11 @@ void cls_RingsAnalyser::ProcessLeadingEdgeDiff(std::vector<cls_Event>::iterator 
             if (v_pixel1uid == v_pixel2uid) continue;
 
             Double_t v_diff = (*v_iterHits2).GetLtime() - (*v_iterHits).GetLtime();
+
+            if (v_pixel2uid > v_pixel1uid)
+                fhLeadingEdgeDiffSymm[v_pixel1uid][v_pixel2uid]->Fill(v_diff);
+            else
+                fhLeadingEdgeDiffSymm[v_pixel2uid][v_pixel1uid]->Fill(v_diff);
 
             if (v_pixel2uid > v_pixel1uid)
                 fhLeadingEdgeDiff[v_pixel1uid][v_pixel2uid]->Fill(v_diff);
@@ -855,6 +896,9 @@ UInt_t cls_RingsAnalyser::ExportHistos(TString p_filename)
     // ----------------------------------------------------------------------------------------------------------------------------------
     // Without filtering bad channels
 
+    gDirectory->mkdir("NoFiltering");
+    gDirectory->cd("NoFiltering");
+
     for (UInt_t v_pmt=0; v_pmt<4; v_pmt++) {
         fhDiffFirstInTimeOnePMT[v_pmt]->Write();
     }
@@ -874,8 +918,22 @@ UInt_t cls_RingsAnalyser::ExportHistos(TString p_filename)
 
     fhLeadingEdgeDiffTopRightQuarter->Write();
 
+    for (UInt_t v_pmt=0; v_pmt<4; v_pmt++) {
+        fhLeadingEdgeDiffOnePMTSymm[v_pmt]->Write();
+    }
+    for (UInt_t v_padiwa=0; v_padiwa<16; v_padiwa++) {
+        fhLeadingEdgeDiffOnePADIWASymm[v_padiwa]->Write();
+    }
+
+    fhLeadingEdgeDiffTopRightQuarterSymm->Write();
+
+    gDirectory->cd("..");
+
     // ----------------------------------------------------------------------------------------------------------------------------------
     // With filtering bad channels
+
+    gDirectory->mkdir("WithFiltering");
+    gDirectory->cd("WithFiltering");
 
     for (UInt_t v_pmt=0; v_pmt<4; v_pmt++) {
         fhDiffFirstInTimeOnePMTGood[v_pmt]->Write();
@@ -896,8 +954,22 @@ UInt_t cls_RingsAnalyser::ExportHistos(TString p_filename)
 
     fhLeadingEdgeDiffTopRightQuarterGood->Write();
 
+    for (UInt_t v_pmt=0; v_pmt<4; v_pmt++) {
+        fhLeadingEdgeDiffOnePMTGoodSymm[v_pmt]->Write();
+    }
+    for (UInt_t v_padiwa=0; v_padiwa<16; v_padiwa++) {
+        fhLeadingEdgeDiffOnePADIWAGoodSymm[v_padiwa]->Write();
+    }
+
+    fhLeadingEdgeDiffTopRightQuarterGoodSymm->Write();
+
+    gDirectory->cd("..");
+
     // ----------------------------------------------------------------------------------------------------------------------------------
     // fhLeadingEdgeDiff for each pair of pixels is here after all the other histograms
+
+    gDirectory->mkdir("LeadingEdgeDiff");
+    gDirectory->cd("LeadingEdgeDiff");
 
     for (UInt_t v_pixel1=0; v_pixel1<256-1; v_pixel1++) {
         TString dirName;
@@ -910,6 +982,23 @@ UInt_t cls_RingsAnalyser::ExportHistos(TString p_filename)
         gDirectory->cd("..");
     }
 
+    gDirectory->cd("..");
+
+    gDirectory->mkdir("LeadingEdgeDiff_Symm");
+    gDirectory->cd("LeadingEdgeDiff_Symm");
+
+    for (UInt_t v_pixel1=0; v_pixel1<256-1; v_pixel1++) {
+        TString dirName;
+        dirName.Form("LeadingEdgeDiffSymm_ID1_%02d", v_pixel1);
+        gDirectory->mkdir(dirName);
+        gDirectory->cd(dirName);
+        for (UInt_t v_pixel2=v_pixel1+1; v_pixel2<256; v_pixel2++) {
+            fhLeadingEdgeDiffSymm[v_pixel1][v_pixel2]->Write();
+        }
+        gDirectory->cd("..");
+    }
+
+    gDirectory->cd("..");
     // ------------------------------------------------------------------------
 
     v_outputFile.Close();
